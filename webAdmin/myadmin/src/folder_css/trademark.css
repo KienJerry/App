@@ -1,0 +1,32 @@
+.form_add_thuong_hieu{
+    background-color: rgb(27, 173, 14);
+    width: 600px;
+    margin: 0 auto;
+    text-align: center;
+    /* padding: 10px; */
+    }
+.Text_ThemDanhMuc{
+    color: white;
+    text-align: center;
+}
+.form_nhap_thon_tin{
+    white-space: nowrap; 
+    width: 400px; 
+    border: 1px solid #000000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+.form_table{
+    margin-top: 50px;
+}
+.magin_btn{
+    margin-right: 20px;
+    margin-left: 20px;
+}
+.input_submit_a{
+    margin-top:10px;
+}
+.input_submit_b{
+    margin-top:10px;
+}

@@ -1,0 +1,12 @@
+.form_add{
+background-color: red;
+width: 500px;
+margin: 0 auto;
+}
+
+.btn_show_data{
+    margin-left: 200px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+}
