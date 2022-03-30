@@ -28,6 +28,7 @@ import {
 } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import {icon} from '../photo/index'
 
 // const paperTheme = useTheme();
 
@@ -38,14 +39,14 @@ export function DrawerContent(props) {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row" }}>
-              <View style={{ marginLeft: 15, flexDirection: "column" }}>
+              <View style={{ marginLeft: 25, flexDirection: "column" }}>
                 <Avatar.Image
-                  source={{
-                    uri: "https://api.adorable.io/avatars/50/abott@adorable.png",
-                  }}
+                  source={
+                    icon.avatar
+                  }
                   size={50}
                 />
-                <View style={{ marginLeft: 15, flexDirection: "column" }}>
+                <View style={{ flexDirection: "column" }}>
                   <Title style={styles.title}>Trương Phú Đồng</Title>
                   <Caption style={styles.caption}>dong12@gmail.com</Caption>
                 </View>

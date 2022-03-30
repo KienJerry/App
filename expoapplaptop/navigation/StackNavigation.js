@@ -64,9 +64,9 @@ const ContactStackNavigator = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator screenOptions={{ headerShown: true }}>
       
-          <Stack.Screen name="Product" component={Product} />
+          <Stack.Screen name="Thông báo" component={Product} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
@@ -78,7 +78,7 @@ const ContactStackPersonnal = () => {
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
       
-          <Stack.Screen name="Thông Tin cá nhân" component={Product} />
+          <Stack.Screen name="Thông Tin cá nhân" component={About} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

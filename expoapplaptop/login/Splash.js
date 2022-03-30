@@ -8,7 +8,7 @@ import {
   StatusBar,
   Image,
 } from "react-native";
-import { images, icon } from '../photo/index'
+import { images, icon } from "../photo/index";
 
 import "react-native-gesture-handler";
 import * as Animatable from "react-native-animatable";
@@ -16,12 +16,10 @@ import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useTheme } from "@react-navigation/native";
 import { Button } from "react-native-paper";
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const Splash = ({ navigation }) => {
-  const { colors } = useTheme();
+  // const { colors } = useTheme();
 
   return (
     <View style={styles.container}>
@@ -30,25 +28,21 @@ const Splash = ({ navigation }) => {
         <Animatable.Image
           animation="bounceInUp"
           duraton="15000"
-          source={images.background}
+          source={icon.background1}
           style={styles.logo}
           resizeMode="stretch"
         />
+        <Text style = {{fontFamily: 'sans-serif-condensed', marginVertical: 10 }}> THẾ GIỚI ĐỒ CÔNG NGHỆ</Text>
       </View>
-      <Animatable.View
-        style={[
-          styles.footer,
-          {
-          },
-        ]}  
-        animation="fadeInUpBig"
-      >
-       
+      <Animatable.View style={[styles.footer, {}]} animation="fadeInUpBig">
         <View style={styles.button}>
-          <TouchableOpacity style= {styles.signIn} onPress={() => navigation.navigate("SignIn")}>
-          <Text style={styles.textSign}> Bắt đầu</Text>
-            {/* <MaterialIcons name="navigate-next" color="#fff" size={20} /> */}
-            <Icon size={20} style ={{color:'white', marginLeft: 10}} name = {'angle-right'}/>
+          <TouchableOpacity
+            style={styles.signIn}
+            onPress={() => navigation.navigate("SignUp")}
+          >
+            <Text style={styles.textSign}>Đăng ký</Text>
+            <MaterialIcons name="navigate-next" color="#fff" size={20} />
+           
           </TouchableOpacity>
         </View>
       </Animatable.View>
@@ -59,30 +53,33 @@ const Splash = ({ navigation }) => {
 export default Splash;
 
 const { height } = Dimensions.get("screen");
-const height_logo = height * 0.20;
+const height_logo = height * 0.2;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    borderColor: "#252525"
+    borderColor: "#252525",
+    // backgroundColor: '#252525' 
   },
   header: {
     flex: 2,
     justifyContent: "center",
     alignItems: "center",
   },
-  footer: {
-    flex: 1,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 60,
-    borderTopRightRadius: 60,
+  // footer: {
+  //   flex: 1,
+  //   backgroundColor: "#fff",
+  //   borderTopLeftRadius: 60,
+  //   borderTopRightRadius: 60,
 
-    paddingHorizontal: 30,
-  },
+  //   paddingHorizontal: 30,
+  // },
   logo: {
-    width: 250,
-    height: 230
+    width: 300,
+    height: 220,
+    marginHorizontal: 20,
+    marginRight: 15,
   },
   title: {
     color: "#05375a",
@@ -97,24 +94,25 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "flex-end",
-    marginTop: 100,
+    padding :20
   },
   signIn: {
     width: height_logo,
     height: 45,
     // marginTop: 40,
-    marginEnd: 20,
+    // marginEnd: 20,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 50,
+    borderRadius: 20,
     flexDirection: "row",
-        backgroundColor: "#252525",
-
-
+    backgroundColor: "#252525",
   },
   textSign: {
     color: "white",
     fontWeight: "bold",
-
+    alignItems: 'flex-end',
+    marginHorizontal: 20,
+     padding: 10
+    // width: 200
   },
-});
+}); 

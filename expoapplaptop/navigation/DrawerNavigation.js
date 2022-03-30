@@ -15,6 +15,7 @@ import {
 } from "react-native-paper";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import {icon, image} from '../photo/index'
 
 // const paperTheme = useTheme();
 
@@ -26,9 +27,9 @@ export function DrawerContent(props) {
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: "row", }}>
               <Avatar.Image
-                source={{
-                  uri: "https://cdn.vatgia.vn/pictures/fullsize/2015/02/27/jkp1425005491.jpg",
-                }}
+                source={
+                 icon.avatar
+                }
                 size={50}
               />
               <View style={{ marginLeft: 15, flexDirection: "column" }}>

@@ -20,6 +20,8 @@ import * as Animatable from "react-native-animatable";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
 import Feather from "react-native-vector-icons/Feather";
+import { icon } from "../photo";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const SignUpScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
@@ -48,7 +50,7 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    fetch("http://192.168.1.100:3001/singup", {
+    fetch("http://192.168.43.153:3001/dangky", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -63,6 +65,7 @@ const SignUpScreen = ({ navigation }) => {
       .then((res) => {
         if (res.success === true) {
           Alert.alert("Thông báo", "Tạo thành công!");
+          navigation.navigate("SignIn");
         } else {
           Alert.alert("Thông báo", "Tài khoản tồn tại!");
         }
@@ -70,8 +73,7 @@ const SignUpScreen = ({ navigation }) => {
     Alert.alert("Thông báo", "Tạo thành công!");
   };
 
-
-// đay là thông báo poup
+  // đay là thông báo poup
   const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
     const scaleValue = React.useRef(new Animated.Value(0)).current;
@@ -111,13 +113,9 @@ const SignUpScreen = ({ navigation }) => {
     );
   };
 
-
-
-
-
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#0c85b9" barStyle="light-content" />
+      <StatusBar backgroundColor="#0096C7" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.Text animation="fadeInRight" style={styles.text_header}>
           Đăng ký
@@ -127,6 +125,8 @@ const SignUpScreen = ({ navigation }) => {
         <ScrollView>
           <Text style={styles.text_footer}>Tên tài khoản</Text>
           <View style={styles.action}>
+            <Icon size={25} name="user" />
+
             <TextInput
               placeholder="Tên tài khoản"
               style={styles.textInput}
@@ -158,14 +158,15 @@ const SignUpScreen = ({ navigation }) => {
             Mật khẩu
           </Text>
           <View style={styles.action}>
+            <Icon size={25} name="lock" />
             <TextInput
               placeholder="Nhập mật khẩu"
               secureTextEntry={data.secureTextEntry ? true : false}
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={setpassdangky}
+              placeholderTextColor={{ color: "#252525" }}
             />
-            <TouchableOpacity></TouchableOpacity>
           </View>
 
           <Text
@@ -179,6 +180,8 @@ const SignUpScreen = ({ navigation }) => {
             Nhập lại mật khẩu
           </Text>
           <View style={styles.action}>
+            <Icon size={25} name="lock" />
+
             <TextInput
               placeholder="Nhập lại mật khẩu"
               secureTextEntry={data.secureTextEntry ? true : false}
@@ -192,12 +195,10 @@ const SignUpScreen = ({ navigation }) => {
               Bằng cách đăng ký, bạn đồng ý với
             </Text>
             <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-              {" "}
               Điều khoản dịch vụ
             </Text>
             <Text style={styles.color_textPrivate}> and</Text>
             <Text style={[styles.color_textPrivate, { fontWeight: "bold" }]}>
-              {" "}
               Chính sách bảo mật
             </Text>
           </View>
@@ -208,21 +209,21 @@ const SignUpScreen = ({ navigation }) => {
 
               onPress={() => checkusers()}
             >
-              <LinearGradient
+              {/* <LinearGradient
                 colors={["#0007", "#252525"]}
                 style={styles.signIn}
+              > */}
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: "#fff",
+                  },
+                ]}
               >
-                <Text
-                  style={[
-                    styles.textSign,
-                    {
-                      color: "#fff",
-                    },
-                  ]}
-                >
-                  Đăng ký
-                </Text>
-              </LinearGradient>
+                Đăng ký
+              </Text>
+              {/* </LinearGradient> */}
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -232,7 +233,7 @@ const SignUpScreen = ({ navigation }) => {
                 {
                   borderColor: "#252525",
                   borderWidth: 1,
-                  marginTop: 25,
+                  marginTop: 10,
                 },
               ]}
             >
@@ -240,13 +241,28 @@ const SignUpScreen = ({ navigation }) => {
                 style={[
                   styles.textSign,
                   {
-                    color: "#0c85b9",
+                    color: "#0096C7",
                   },
                 ]}
               >
                 Đăng nhập
               </Text>
             </TouchableOpacity>
+            <Text style={{marginVertical: 20, fontSize: 20}} >Hoặc</Text>
+
+            <View
+              style={{
+                flexDirection: "row",
+                marginVertical: 10,
+                marginTop: 20,
+                justifyContent: "space-around",
+                // margin: 20
+              }}
+            >
+              <Icon style={{ margin: 10 }} size={30} name="google" />
+              <Icon style={{ margin: 10 }} size={30} name="facebook" />
+            </View>
+            
 
             <ModalPoup visible={visible}>
               <View style={{ alignItems: "center" }}>
@@ -289,7 +305,7 @@ export default SignUpScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0c85b9",
+    backgroundColor: "#0096C7",
   },
   header: {
     flex: 1,
@@ -325,13 +341,12 @@ const styles = StyleSheet.create({
 
     borderRadius: 20,
     borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
+    // paddingBottom: 5,
   },
   textInput: {
     flex: 1,
     paddingLeft: 10,
     color: "#05375a",
-    marginLeft: 30,
   },
   button: {
     alignItems: "center",
@@ -344,6 +359,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     marginTop: 20,
+    backgroundColor: "#252525",
   },
   textSign: {
     fontSize: 18,

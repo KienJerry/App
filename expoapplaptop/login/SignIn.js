@@ -15,8 +15,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import { useTheme } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
-
-
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const SignInScreen = ({ navigation }) => {
   const [data, setData] = React.useState({
@@ -44,7 +43,7 @@ const SignInScreen = ({ navigation }) => {
       return;
     }
 
-    fetch("http://192.168.43.153:3000/login", {
+    fetch("http://192.168.43.153:3001/dangnhap", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -66,8 +65,6 @@ const SignInScreen = ({ navigation }) => {
   };
 
   const [visible, setVisible] = React.useState(false);
-
-
 
   const ModalPoup = ({ visible, children }) => {
     const [showModal, setShowModal] = React.useState(visible);
@@ -108,18 +105,13 @@ const SignInScreen = ({ navigation }) => {
     );
   };
 
-
-
-
-
-
-
-
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#0c85b9" barStyle="light-content" />
+      <StatusBar backgroundColor="#0096C7" barStyle="light-content" />
       <View style={styles.header}>
-        <Animatable.Text  animation="fadeInRight" style={styles.text_header}>Đăng nhập</Animatable.Text>
+        <Animatable.Text animation="fadeInRight" style={styles.text_header}>
+          Đăng nhập
+        </Animatable.Text>
       </View>
       <Animatable.View
         animation="fadeInRightBig"
@@ -141,6 +133,7 @@ const SignInScreen = ({ navigation }) => {
           Tài khoản
         </Text>
         <View style={styles.action}>
+          <Icon name="user" size={25} />
           <TextInput
             placeholder="Nhập tên"
             placeholderTextColor="#666666"
@@ -179,6 +172,8 @@ const SignInScreen = ({ navigation }) => {
           Mật khẩu
         </Text>
         <View style={styles.action}>
+          <Icon name="lock" size={25} />
+
           <TextInput
             placeholder="Nhập mật khẩu"
             placeholderTextColor="#666666"
@@ -202,7 +197,7 @@ const SignInScreen = ({ navigation }) => {
         )}
 
         <TouchableOpacity>
-          <Text style={{ color: "#0c85b9", marginTop: 15 }}>
+          <Text style={{ color: "#0096C7", marginTop: 15 }}>
             Quên mật khẩu?
           </Text>
         </TouchableOpacity>
@@ -212,25 +207,24 @@ const SignInScreen = ({ navigation }) => {
             // onPress={() => {
             //   loginHandle(data.username, data.password);
             // }}
-            onPress={() => navigation.navigate("Home")}
-            // onPress={() => checkuser()}
-
+            // onPress={() => navigation.navigate("Home")}
+            onPress={() => checkuser()}
           >
-            <LinearGradient
+            {/* <LinearGradient
               colors={["#0007", "#252525"]}
               style={styles.signIn}
+            > */}
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: "#fff",
+                },
+              ]}
             >
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: "#fff",
-                  },
-                ]}
-              >
-                Đăng nhập
-              </Text>
-            </LinearGradient>
+              Đăng nhập
+            </Text>
+            {/* </LinearGradient> */}
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -240,7 +234,7 @@ const SignInScreen = ({ navigation }) => {
               {
                 borderColor: "#252525",
                 borderWidth: 1,
-                marginTop: 35,
+                marginTop: 10,
               },
             ]}
           >
@@ -248,13 +242,28 @@ const SignInScreen = ({ navigation }) => {
               style={[
                 styles.textSign,
                 {
-                  color: "#0c85b9",
+                  color: "#0096C7",
                 },
               ]}
             >
               Đăng ký
             </Text>
           </TouchableOpacity>
+
+          <Text style={{ marginVertical: 20, fontSize: 20 }}>Hoặc</Text>
+
+          <View
+            style={{
+              flexDirection: "row",
+              marginVertical: 10,
+              marginTop: 20,
+              justifyContent: "space-around",
+              // margin: 20
+            }}
+          >
+            <Icon style={{ margin: 10 }} size={30} name="google" />
+            <Icon style={{ margin: 10 }} size={30} name="facebook" />
+          </View>
 
           <ModalPoup visible={visible}>
             <View style={{ alignItems: "center" }}>
@@ -292,7 +301,7 @@ export default SignInScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0c85b9",
+    backgroundColor: "#0096C7",
   },
   header: {
     flex: 1,
@@ -307,7 +316,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     marginLeft: 20,
-    marginTop: 20
+    marginTop: 20,
   },
   text_header: {
     color: "#fff",
@@ -315,13 +324,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: "center",
     justifyContent: "center",
-    paddingRight: 10
+    paddingRight: 10,
   },
   text_footer: {
     color: "#05375a",
     fontSize: 18,
     marginTop: 20,
-    marginLeft : 20
+    marginLeft: 20,
   },
   action: {
     flexDirection: "row",
@@ -358,6 +367,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     marginTop: 40,
+    backgroundColor: "#252525",
   },
   textSign: {
     fontSize: 18,
