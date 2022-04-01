@@ -38,7 +38,7 @@ const Splash = ({ navigation }) => {
         <View style={styles.button}>
           <TouchableOpacity
             style={styles.signIn}
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={() => navigation.navigate("Home")}
           >
             <Text style={styles.textSign}>Đăng ký</Text>
             <MaterialIcons name="navigate-next" color="#fff" size={20} />

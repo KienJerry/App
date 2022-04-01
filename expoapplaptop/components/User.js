@@ -34,7 +34,9 @@ import Iconn from "react-native-vector-icons/FontAwesome";
 // import Swiper from 'react-native-swiper'
 
 export default function Home() {
-  const api = "http://192.168.1.102:3001/"; //
+  // const api = "http://192.168.1.102:3001/"; //
+  const api = "http://192.168.1.8:3001/"; //
+
   // const api = "http://192.168.1.100:3001/";
   // const api = "http://10.22.219.50:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
   // const api = "http://10.22.222.53:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
@@ -74,6 +76,20 @@ export default function Home() {
       setLoading(false);
     }
   };
+  const getDataa = async () => {
+    try {
+      const response = await fetch(api + "sanpham/");
+      // const json = await response.json();
+      const json = await response.json();
+      console.log(json);
+      // setData(json.movies);
+      setDataa(json);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   // const [isSelected, setSelection] = useState(false);
 
 
@@ -82,7 +98,9 @@ export default function Home() {
 
   useEffect(() => {
     getData();
-    fetch('http://192.168.1.102:3001/sanpham')
+    getDataa();
+    
+    fetch('http://192.168.1.8:3001/sanpham')
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
@@ -104,20 +122,14 @@ export default function Home() {
   const [masterDataSource, setMasterDataSource] = useState([]);
 
 
-
-
-
-
-
   const searchFilterFunction = (text) => {
-    // Check if searched text is not blank
+    
     if (text) {
-      // Inserted text is not blank
-      // Filter the masterDataSource and update FilteredDataSource
+    
       const newData = masterDataSource.filter(function (item) {
-        // Applying filter for the inserted text in search bar
-        const itemData = item.tenthuonghieu
-          ? item.title.toUpperCase()
+       
+        const itemData = item.tensanpham
+          ? item.tensanpham.toUpperCase()
           : ''.toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
@@ -134,22 +146,11 @@ export default function Home() {
 
 
 
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#C8C8C8',
-        }}
-      />
-    );
-  };
+
 
   const getItem = (item) => {
     // Function for click on an item
-    alert('Id : ' + item.mathuonghieu + ' Title : ' + item.tenthuonghieu);
+    alert('Id : ' + item.masanpham + ' Title : ' + item.tensanpham);
   };
 
   
@@ -158,6 +159,7 @@ export default function Home() {
   return (
     <View style={{ flex: 1 }}>
       {/* List Danh Sách Và Sửa*/}
+
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View
           style={{
@@ -201,9 +203,8 @@ export default function Home() {
         />
       </View>
 
-      {/* <ScrollView
-        showsVerticalScrollIndicator= {false}
-      > */}
+      <ScrollView
+        showsVerticalScrollIndicator= {false}>
         <Swiper
           style={styles.wrapper}
           autoplay
@@ -299,6 +300,39 @@ export default function Home() {
 
         <View style={{}}>
          
+        
+        <FlatList
+            // numColumns={2}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+            style={styles.flatList}
+            data={dataa}
+            // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
+            renderItem={({ item }) => (
+              <View style={{ flex: 1 }}>
+                <Text style={styles.listItemHorizontal} key= {item.masanpham}>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }} >
+                    {item.mathuonghieu}{" "}
+                  </Text>
+                  {/* <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                    {item.tensanpham}
+                  </Text>
+                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                    {item.giasanpham}
+                  </Text>
+                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                    {item.loaisanpham}
+                  </Text> */}
+                  {/* <Image
+                   style={{
+                    width: 100,
+                    height: 100
+                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image> */}
+                </Text>
+              </View>
+            )}
+          />
+
         </View>
 
         <View style={{ flex: 1, marginHorizontal: 2 }}>
@@ -306,7 +340,8 @@ export default function Home() {
             numColumns={2}
             showsVerticalScrollIndicator={false}
             style={styles.flatList}
-            data={data}
+            data={filteredDataSource}
+            onPress
             // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
@@ -333,7 +368,7 @@ export default function Home() {
             )}
           />
         </View>
-      {/* </ScrollView> */}
+      </ScrollView>
     </View>
   );
 }
