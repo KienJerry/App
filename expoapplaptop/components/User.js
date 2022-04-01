@@ -92,15 +92,11 @@ export default function Home() {
   };
   // const [isSelected, setSelection] = useState(false);
 
-
-
-
-
   useEffect(() => {
     getData();
     getDataa();
-    
-    fetch('http://192.168.1.8:3001/sanpham')
+
+    fetch("http://192.168.1.8:3001/sanpham")
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
@@ -113,24 +109,19 @@ export default function Home() {
   // ////////////////////////////////////////////////////////////////
   // const { search } = this.state;
 
-
   // // serach
-  // // 
+  // //
 
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
 
-
   const searchFilterFunction = (text) => {
-    
     if (text) {
-    
       const newData = masterDataSource.filter(function (item) {
-       
         const itemData = item.tensanpham
           ? item.tensanpham.toUpperCase()
-          : ''.toUpperCase();
+          : "".toUpperCase();
         const textData = text.toUpperCase();
         return itemData.indexOf(textData) > -1;
       });
@@ -144,18 +135,6 @@ export default function Home() {
     }
   };
 
-
-
-
-
-  const getItem = (item) => {
-    // Function for click on an item
-    alert('Id : ' + item.masanpham + ' Title : ' + item.tensanpham);
-  };
-
-  
-  
-  
   return (
     <View style={{ flex: 1 }}>
       {/* List Danh Sách Và Sửa*/}
@@ -203,8 +182,7 @@ export default function Home() {
         />
       </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator= {false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Swiper
           style={styles.wrapper}
           autoplay
@@ -299,19 +277,17 @@ export default function Home() {
         </Swiper>
 
         <View style={{}}>
-         
-        
-        <FlatList
+          <FlatList
             // numColumns={2}
-          showsHorizontalScrollIndicator={false}
-          horizontal
+            showsHorizontalScrollIndicator={false}
+            horizontal
             style={styles.flatList}
             data={dataa}
             // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItemHorizontal} key= {item.masanpham}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }} >
+                <Text style={styles.listItemHorizontal} key={item.masanpham}>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     {item.mathuonghieu}{" "}
                   </Text>
                   {/* <Text style={{ fontSize: 10, fontWeight: "bold" }}>
@@ -332,7 +308,6 @@ export default function Home() {
               </View>
             )}
           />
-
         </View>
 
         <View style={{ flex: 1, marginHorizontal: 2 }}>
@@ -345,8 +320,8 @@ export default function Home() {
             // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItem} key= {item.masanpham}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }} >
+                <Text style={styles.listItem} key={item.masanpham}>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     {/* {item.mathuonghieu}{" "} */}
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
@@ -358,11 +333,11 @@ export default function Home() {
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                     {item.loaisanpham}
                   </Text>
-                  {/* <Image
+                  <Image
                    style={{
                     width: 100,
                     height: 100
-                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image> */}
+                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image>
                 </Text>
               </View>
             )}
