@@ -164,7 +164,7 @@ app.post('/addthuonghieu', function (req, res) {
 })
 //Xóa thương hiệu
 app.post('/deletethuonghieu', function(req, res){
-  // console.log("abc")
+  console.log("abc")
   var sql = "delete from thuonghieu where mathuonghieu = ("+req.body.myid+")";
   console.log(sql);
   con.query(sql, function(err, result, fields){
@@ -430,6 +430,7 @@ app.post('/deleteimg', function(req, res){
 //   res.send(files)
 // })
 
+// Hiện thị hình ảnh mục image
 app.set('view engine', 'ejs');   /// npm install ejs@3.1.6 lên gg tìm hiểu 
 //Hiển thị hình ảnh html
 app.get('/hienthihinhanh', function (req, res) {  // cái đầu là html :v viết dài dòng hơn , cái dưới là chạy bằng ejs , viết 1 dòng nhưng lại thêm nhiều file và folder
@@ -462,6 +463,53 @@ app.get('/hienthihinhanh', function (req, res) {  // cái đầu là html :v vi�
 
 
 
+
+//React Native
+ // login
+ app.post("/dangky", (req, res) => {
+  console.log("đã vô phần đăng ký");
+  var sql = "SELECT * FROM taikhoan WHERE taikhoan= '" + req.body.tentaikhoans + "' AND matkhau= '" + req.body.matkhaus +"'";
+  con.query(sql, function (err, result, fields) {
+    if (err) {
+      console.log(err);
+      res.send({ success: false, message: "Database không có kết nối!" });
+    }
+    if (result.length > 0) {
+      res.send({ success: false });
+    } else {
+      res.send({ success: true });
+      var sql = "INSERT INTO taikhoan ( taikhoan, matkhau) values('" + req.body.tentaikhoans + "','" +req.body.matkhaus +"');";
+      con.query(sql, function (err, result, fields) {
+        if (err) throw err;
+      });
+    }
+  });
+
+
+});
+
+// signin
+app.post("/dangnhap", (req, res) => {
+  var sql ="SELECT * FROM taikhoan WHERE taikhoan= '" +req.body.username +"' AND matkhau= '" +req.body.password +"'";
+
+  con.query(sql, function (err, result, fields) {
+    if (err) {
+      // console.log(err);
+      res.send({ success: false, message: "Database không có kết nối!" });
+    }
+
+    if (result.length > 0) {
+      res.send({ success: true });
+      // console.log(res);
+    } else {
+      res.send({ success: false, message: "Sai tài khoản!" });
+      // console.log(res);
+    }
+  });
+});
+
+
+
 // ERR 404
 app.use(function(req, res, next) {
     res.status(404);
@@ -472,5 +520,8 @@ app.use(function(req, res, next) {
 app.listen(3001, function () {
     console.log('Example app listening on port 3001! "http://localhost:3001"  ');
 });
+
+
+
 
 
