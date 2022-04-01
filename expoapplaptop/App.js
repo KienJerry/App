@@ -12,11 +12,11 @@ export default function App() {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Root"
           options={{ headerShown: false }}
           component={RootStack}
-        />
+        /> */}
         <Stack.Screen
           name="Home"
           options={{ headerShown: false }}

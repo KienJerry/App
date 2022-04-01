@@ -50,7 +50,8 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    fetch("http://192.168.43.153:3001/dangky", {
+    // fetch("http://192.168.43.153:3001/dangky", {
+    fetch("http://192.168.1.102:3001/dangky", {
       method: "POST",
       headers: {
         Accept: "application/json",

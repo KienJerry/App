@@ -34,11 +34,12 @@ import Iconn from "react-native-vector-icons/FontAwesome";
 // import Swiper from 'react-native-swiper'
 
 export default function Home() {
-  const api = "http://192.168.43.153:3001/"; //
-  // const api = "http://192.168.1.100:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
+  const api = "http://192.168.1.102:3001/"; //
+  // const api = "http://192.168.1.100:3001/";
   // const api = "http://10.22.219.50:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
   // const api = "http://10.22.222.53:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
   const [data, setData] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
+  const [dataa, setDataa] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
   const [pagenumber, setpagenumber] = useState(""); // set number là 1 :> Vì lúc đầu vào giao diện , mình sẽ load trang 1 nên để mặc định là 1
   const onPressLearnMore = (getpage) => {
     // code cho button chuyen trang
@@ -61,7 +62,7 @@ export default function Home() {
   // code gọi phân trang
   const getData = async () => {
     try {
-      const response = await fetch(api + "thuonghieu/");
+      const response = await fetch(api + "sanpham/");
       // const json = await response.json();
       const json = await response.json();
       console.log(json);
@@ -73,23 +74,35 @@ export default function Home() {
       setLoading(false);
     }
   };
+  // const [isSelected, setSelection] = useState(false);
+
+
+
+
+
   useEffect(() => {
     getData();
+    fetch('http://192.168.1.102:3001/sanpham')
+      .then((response) => response.json())
+      .then((responseJson) => {
+        setFilteredDataSource(responseJson);
+        setMasterDataSource(responseJson);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
-  ////////////////////////////////////////////////////////////////
-  const [isSelected, setSelection] = useState(false);
+  // ////////////////////////////////////////////////////////////////
   // const { search } = this.state;
-  // serach
-  const [searchText, setSearchText] = useState("");
-  const filteredFoods = () =>
-    foods.filter((eachFood) =>
-      eachFood.name
-      .toLowerCase().includes(searchText.toLowerCase())
-    );
-  const [serachText, setSerachText] = useState('')
+
+
+  // // serach
+  // // 
+
   const [search, setSearch] = useState('');
-  const [filteredDataSource, setFilteredDataSource] = useState([data]);
-  const [masterDataSource, setMasterDataSource] = useState([data]);
+  const [filteredDataSource, setFilteredDataSource] = useState([]);
+  const [masterDataSource, setMasterDataSource] = useState([]);
+
 
 
 
@@ -100,15 +113,14 @@ export default function Home() {
     // Check if searched text is not blank
     if (text) {
       // Inserted text is not blank
-      // Filter the masterDataSource
-      // Update FilteredDataSource
-      const newData = masterDataSource.filter(
-        function (item) {
-          const itemData = item.tenthuonghieu
-            ? item.tenthuonghieu.toUpperCase()
-            : ''.toUpperCase();
-          const textData = text.toUpperCase();
-          return itemData.indexOf(textData) > -1;
+      // Filter the masterDataSource and update FilteredDataSource
+      const newData = masterDataSource.filter(function (item) {
+        // Applying filter for the inserted text in search bar
+        const itemData = item.tenthuonghieu
+          ? item.title.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
       });
       setFilteredDataSource(newData);
       setSearch(text);
@@ -120,10 +132,33 @@ export default function Home() {
     }
   };
 
+
+
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item Separator
+      <View
+        style={{
+          height: 0.5,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
+  const getItem = (item) => {
+    // Function for click on an item
+    alert('Id : ' + item.mathuonghieu + ' Title : ' + item.tenthuonghieu);
+  };
+
+  
+  
+  
   return (
     <View style={{ flex: 1 }}>
       {/* List Danh Sách Và Sửa*/}
-      <View style={{ flexDirection: "row", alignItems: 'center'}}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View
           style={{
             flex: 1,
@@ -134,29 +169,41 @@ export default function Home() {
             marginVertical: 10,
             borderRadius: 10,
             flexDirection: "row",
-            marginBottom: 10
+            marginBottom: 10,
           }}
         >
-          <Image style ={{height: 22, width: 22,marginVertical: 10,marginHorizontal: 5, opacity: 0.8, tintColor: '#0c85b9'}} source={icon.serach}/>
+          <Image
+            style={{
+              height: 22,
+              width: 22,
+              marginVertical: 10,
+              marginHorizontal: 5,
+              opacity: 0.8,
+              tintColor: "#0c85b9",
+            }}
+            source={icon.serach}
+          />
 
           <TextInput
             autoCorrect={false}
             onChangeText={(text) => searchFilterFunction(text)}
-          value={search}
-            style={
-              {
-                width: '100%',
-                opacity: 1,
-                paddingStart: 10
-              }
-            }
+            value={search}
+            style={{
+              width: "100%",
+              opacity: 1,
+              paddingStart: 10,
+            }}
           />
         </View>
-          <Image style ={{height: 30, width: 30, marginEnd: 10 , marginTop: 5}} source={icon.iconshopping}/>
-
+        <Image
+          style={{ height: 30, width: 30, marginEnd: 10, marginTop: 5 }}
+          source={icon.iconshopping}
+        />
       </View>
 
-      <ScrollView>
+      {/* <ScrollView
+        showsVerticalScrollIndicator= {false}
+      > */}
         <Swiper
           style={styles.wrapper}
           autoplay
@@ -251,30 +298,7 @@ export default function Home() {
         </Swiper>
 
         <View style={{}}>
-          <FlatList
-            // numColumns={2}
-            // showsHorizontalScrollIndicator={true}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.flatList}
-            data={data}
-            keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
-            renderItem={({ item }) => (
-              <View style={{ flex: 1, padding: 5 }}>
-                <Text style={styles.listItemHorizontal}>
-                  {/* <Text style={{ fontSize: 30, fontWeight: "bold" }}>
-                  {item.tenthuonghieu}
-                </Text>
-                <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                  {item.email}
-                </Text>
-                <Text>{item.diachi}</Text> */}
-                  {/* <Text> {item.email} </Text> */}
-                  <Text>ahaha</Text>
-                </Text>
-              </View>
-            )}
-          />
+         
         </View>
 
         <View style={{ flex: 1, marginHorizontal: 2 }}>
@@ -282,23 +306,23 @@ export default function Home() {
             numColumns={2}
             showsVerticalScrollIndicator={false}
             style={styles.flatList}
-            data={filteredDataSource}
-            keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
+            data={data}
+            // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItem}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    {item.mathuonghieu}{" "}
+                <Text style={styles.listItem} key= {item.masanpham}>
+                  <Text style={{ fontSize: 20, fontWeight: "bold" }} >
+                    {/* {item.mathuonghieu}{" "} */}
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.tenthuonghieu}
+                    {item.tensanpham}
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.email}
+                    {item.giasanpham}
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.diachi}
-                  </Text> 
+                    {item.loaisanpham}
+                  </Text>
                   {/* <Image
                    style={{
                     width: 100,
@@ -309,7 +333,7 @@ export default function Home() {
             )}
           />
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </View>
   );
 }
