@@ -52,6 +52,16 @@ const EditEmployee = () => {
 
   //code update
   const updateEmployee = async e => {
+    if(name_trademark === ""){
+      alert("Nhập tên sản phẩm");
+      refreshPage();
+    }if(name_trademark_address === ""){
+      alert("Nhập giá sản phẩm");
+      refreshPage();
+    }if(details === ""){
+      alert("Chi tiết sản phẩm");
+      refreshPage();
+    }else{
     e.preventDefault();
     fetch(api + 'editsanphamimg/editid', {   
       method: 'POST',
@@ -74,8 +84,7 @@ const EditEmployee = () => {
           hard_drive:hard_drive,
           weight:weight,
           date:date,
-        })
-        
+        })    
     })
     .then((response) => {
       if(response === 'okedit'){
@@ -84,7 +93,11 @@ const EditEmployee = () => {
     });
     console.log("tên đã nhập : " + name_trademark);
     history.push("/home");
+  }
   };
+
+ 
+
 
   //code update hình ảnh 
   const getimgedit = async(e) =>{

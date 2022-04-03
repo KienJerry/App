@@ -71,6 +71,14 @@ function EmployeeDetail(){
 
     //code thêm sản phẩm
     const submitEmployeeRecord = async (e) =>{ 
+      if(tensanpham === ""){
+        alert("Bạn Phải nhập tên Sản Phẩm !")
+      }
+      if(giasanpham === ""){
+        alert("Bạn Phải nhập giá sản phẩm")
+      }if(chitietsanpham === ""){
+        alert("Bạn phải nhập thông tin sản phẩm")
+      }else{
       const formData = new FormData(); 
       console.log(formData);
       // console.log(data);
@@ -90,7 +98,7 @@ function EmployeeDetail(){
 
       console.log( "Tên đã nhập" +tensanpham);
       // console.log(selectedFile);
-      axios.post(api +'addsanphamimg/',  formData )
+        axios.post(api +'addsanphamimg/',  formData )
         .then(res =>{
             if(res.data ==='ok'){
               alert("thêm thành công")
@@ -99,8 +107,9 @@ function EmployeeDetail(){
           // refreshPage();
         })
           // handleSubmission();
-         refreshPage();
+        //  refreshPage();
       }
+    }
       
     // Search name 
     const searchRecords = () =>
@@ -133,7 +142,7 @@ function EmployeeDetail(){
           alert("xóa thành công")
         }
       });
-      refreshPage();
+      // refreshPage();
     }
  
   return(
