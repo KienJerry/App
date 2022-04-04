@@ -210,6 +210,7 @@ app.get('/sanpham', function (req, res) {
 });
 //Thêm Sản Phẩm + image
 app.post('/addsanphamimg', upload.single('file') , (req, res, next) => {
+  console.log("Đã nhảy vào mục thêm sản phẩm");
   const file = req.file;
   if (!file) {
     const error = new Error('Chưa thêm hình ảnh !')
@@ -508,7 +509,15 @@ app.post("/dangnhap", (req, res) => {
   });
 });
 
-
+//Edit Account
+//Hiển thị thông tin tài khoản
+app.get('/taikhoan', function (req, res) {
+  con.query("SELECT * FROM `taikhoan`order by mataikhoan desc", function (err, result, fields) {
+    // console.log(result);
+    if (err) throw err;
+    res.send(result);
+    });
+});
 
 // ERR 404
 app.use(function(req, res, next) {

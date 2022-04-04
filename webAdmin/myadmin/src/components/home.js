@@ -72,13 +72,17 @@ function EmployeeDetail(){
     //code thêm sản phẩm
     const submitEmployeeRecord = async (e) =>{ 
       if(tensanpham === ""){
-        alert("Bạn Phải nhập tên Sản Phẩm !")
+        alert("Bạn Phải nhập tên Sản Phẩm !");
+        refreshPage();
       }
       if(giasanpham === ""){
-        alert("Bạn Phải nhập giá sản phẩm")
+        alert("Bạn Phải nhập giá sản phẩm");
+        refreshPage();
       }if(chitietsanpham === ""){
-        alert("Bạn phải nhập thông tin sản phẩm")
+        alert("Bạn phải nhập thông tin sản phẩm");
+        refreshPage();
       }else{
+        console.log("Đã chạy vào hàm thêm dữ liệu");
       const formData = new FormData(); 
       console.log(formData);
       // console.log(data);
@@ -142,7 +146,8 @@ function EmployeeDetail(){
           alert("xóa thành công")
         }
       });
-      // refreshPage();
+      refreshPage();
+      
     }
  
   return(

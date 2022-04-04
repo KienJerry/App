@@ -14,6 +14,7 @@ import {
   Dimensions,
   Pressable,
   SafeAreaView,
+  ImageBackground,
 } from "react-native";
 
 import Swiper from "react-native-swiper";
@@ -76,6 +77,7 @@ export default function Home() {
   };
   useEffect(() => {
     getData();
+
   }, []);
   ////////////////////////////////////////////////////////////////
   // const [isSelected, setSelection] = useState(false);
@@ -87,10 +89,10 @@ export default function Home() {
   //     eachFood.name
   //     .toLowerCase().includes(searchText.toLowerCase())
   //   );
-  // const [serachText, setSerachText] = useState('')
-  // const [search, setSearch] = useState('');
-  // const [filteredDataSource, setFilteredDataSource] = useState([data]);
-  // const [masterDataSource, setMasterDataSource] = useState([data]);
+  const [serachText, setSerachText] = useState('')
+  const [search, setSearch] = useState('');
+  const [filteredDataSource, setFilteredDataSource] = useState([data]);
+  const [masterDataSource, setMasterDataSource] = useState([data]);
 
 
 
@@ -290,7 +292,7 @@ export default function Home() {
             // keyExtractor={({ item }, index) => item} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItem} key={item.masanpham}>
+                <View style={styles.listItem} key={item.masanpham}>
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     {item.tensanpham}{" "}
                   </Text>
@@ -303,12 +305,8 @@ export default function Home() {
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                     {item.chitietsanpham}
                   </Text> 
-                  {/* <Image
-                   style={{
-                    width: 100,
-                    height: 100
-                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image> */}
-                </Text>
+                  <Image source={{uri:  api +'images/' + item.mahinhanh}} style={{width: '100%', height:100}} />
+                </View>
               </View>
             )}
           />
@@ -327,6 +325,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginVertical: 5,
     borderRadius: 10,
+    marginHorizontal: 10,
     color: "#000",
     backgroundColor: "#ffff",
     shadowColor: "#171717",
@@ -334,7 +333,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 2.5,
     shadowRadius: 5,
     elevation: 5,
-    width: 190,
+    width: 160,
     height: 230,
   },
   listItemHorizontal: {
