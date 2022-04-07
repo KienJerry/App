@@ -159,7 +159,7 @@ export default function Home() {
 
       </View>
 
-      {/* <ScrollView> */}
+      <ScrollView >
         <Swiper
           style={styles.wrapper}
           autoplay
@@ -311,7 +311,7 @@ export default function Home() {
             )}
           />
         </View>
-      {/* </ScrollView> */}
+      </ScrollView>
     </View>
   );
 }

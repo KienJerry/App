@@ -30,6 +30,7 @@ function EmployeeDetail(){
   const [ocung, setocung] = useState('');
   const [trongluong, settrongluong] = useState('');
   const [date, setdate] = useState('');
+  const [giacu , setgiacu] = useState('');
 
   const [search,setSearch] =useState('');
   const [record,setRecord] = useState([]);
@@ -99,6 +100,7 @@ function EmployeeDetail(){
       formData.append('ocung', ocung);
       formData.append('trongluong', trongluong);
       formData.append('date', date);
+      formData.append('giacu', giacu);
 
       console.log( "Tên đã nhập" +tensanpham);
       // console.log(selectedFile);
@@ -174,7 +176,11 @@ function EmployeeDetail(){
                 </div>
               
                 <div className="form-group">
-                   <input type="number" name='gia' className="form-control mb-4"  placeholder="Giá Sản Phẩm" onChange={(e) => setgiasanpham(e.target.value)}/>
+                   <input type="number" name='giacu' className="form-control mb-4"  placeholder="Giá Sản Phẩm Cũ" onChange={(e) => setgiacu(e.target.value)}/>
+                </div>
+
+                <div className="form-group">
+                   <input type="number" name='gia' className="form-control mb-4"  placeholder="Giá Sản Phẩm Mới" onChange={(e) => setgiasanpham(e.target.value)}/>
                 </div>
                
                 <div className="form-group">
@@ -254,7 +260,8 @@ function EmployeeDetail(){
                 <th>ID Sản Phẩm</th>
                 <th>Tên Sản Phẩm</th>
                 <th>Loại Sản Phẩm</th>
-                <th>Giá Sản Phẩm</th>
+                <th>Giá Sản Phẩm Cũ</th>
+                <th>Giá Sản Phẩm Mới</th>
                 <th>Hãng Sản Xuất</th>  
                 <th>Hình ảnh</th>
             </tr>
@@ -266,6 +273,7 @@ function EmployeeDetail(){
                 <td>{name.masanpham}</td>
                 <td>{name.tensanpham}</td>
                 <td>{name.loaisanpham}</td>
+                <td style={{textDecorationLine : 'line-through'}}>{name.giacu.toLocaleString()}</td>
                 <td>{name.giasanpham.toLocaleString()}</td>
                 <td>{name.hangsanxuat}</td>
                 <td>

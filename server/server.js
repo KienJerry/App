@@ -219,7 +219,7 @@ app.post('/addsanphamimg', upload.single('file') , (req, res, next) => {
   }else{
     console.log("đã vào")
      var imgsrc = 'http://localhost:3001/images/' + file.filename;
-     var sql = "insert into sanpham (tensanpham , loaisanpham , giasanpham , chitietsanpham , hangsanxuat , mahinhanh , thuonghieu ,manhinh , cpu , ram , ocung , trongluong , ngaysanxuat)  values ('"+req.body.ten+"' , '"+req.body.danhmucsanpham+"' , '"+req.body.giasanpham+"', '"+req.body.chitietsanpham+"', '"+req.body.hangsanxuat+"','"+ file.filename +"' ,'"+req.body.thuonghieu+"', '"+req.body.manhinh+"', '"+req.body.cpu+"','"+req.body.ram+"', '"+req.body.ocung+"', '"+req.body.trongluong+"', '"+req.body.date+"')";
+     var sql = "insert into sanpham (tensanpham , loaisanpham , giasanpham , chitietsanpham , hangsanxuat , mahinhanh , thuonghieu ,manhinh , cpu , ram , ocung , trongluong , ngaysanxuat , giacu)  values ('"+req.body.ten+"' , '"+req.body.danhmucsanpham+"' , '"+req.body.giasanpham+"', '"+req.body.chitietsanpham+"', '"+req.body.hangsanxuat+"','"+ file.filename +"' ,'"+req.body.thuonghieu+"', '"+req.body.manhinh+"', '"+req.body.cpu+"','"+req.body.ram+"', '"+req.body.ocung+"', '"+req.body.trongluong+"', '"+req.body.date+"', '"+req.body.giacu+"')";
     console.log(sql);
     con.query(sql, [imgsrc] , function(err, result, fields){
       if(err) throw err;
@@ -468,8 +468,8 @@ app.get('/hienthihinhanh', function (req, res) {  // cái đầu là html :v vi�
 //React Native
  // login
  app.post("/dangky", (req, res) => {
-  console.log("đã vô phần đăng ký");
-  var sql = "SELECT * FROM taikhoan WHERE taikhoan= '" + req.body.tentaikhoans + "' AND matkhau= '" + req.body.matkhaus +"'";
+   var sql = "SELECT * FROM taikhoan WHERE taikhoan= '" + req.body.tentaikhoans + "' AND matkhau= '" + req.body.matkhaus +"'";
+     console.log("đã vô phần đăng ký");
   con.query(sql, function (err, result, fields) {
     if (err) {
       console.log(err);
@@ -479,7 +479,8 @@ app.get('/hienthihinhanh', function (req, res) {  // cái đầu là html :v vi�
       res.send({ success: false });
     } else {
       res.send({ success: true });
-      var sql = "INSERT INTO taikhoan ( taikhoan, matkhau) values('" + req.body.tentaikhoans + "','" +req.body.matkhaus +"');";
+      var sql = "INSERT INTO taikhoan ( taikhoan, matkhau) values('" + req.body.tentaikhoans + "' ,  MD5('"+req.body.matkhaus +"') );"
+      console.log(sql);
       con.query(sql, function (err, result, fields) {
         if (err) throw err;
       });
@@ -491,8 +492,8 @@ app.get('/hienthihinhanh', function (req, res) {  // cái đầu là html :v vi�
 
 // signin
 app.post("/dangnhap", (req, res) => {
-  var sql ="SELECT * FROM taikhoan WHERE taikhoan= '" +req.body.username +"' AND matkhau= '" +req.body.password +"'";
-
+  var sql ="SELECT * FROM taikhoan WHERE taikhoan= '" +req.body.username +"' AND matkhau= MD5('" +req.body.password +"')";
+    console.log(sql);
   con.query(sql, function (err, result, fields) {
     if (err) {
       // console.log(err);
@@ -515,6 +516,19 @@ app.get('/taikhoan', function (req, res) {
   con.query("SELECT * FROM `taikhoan`order by mataikhoan desc", function (err, result, fields) {
     // console.log(result);
     if (err) throw err;
+    res.send(result);
+    });
+});
+
+//Chỉnh sửa chi tiết Sản Phẩm lấy theo ID
+app.get('/taikhoan/:idsp', function (req, res) {
+  var page = req.params.idsp;
+  
+  var sql = "SELECT * FROM taikhoan WHERE taikhoan = '" + page +"' ";
+  con.query(sql , function (err, result, fields) {
+    if (err) throw err;
+    // console.log(result);
+
     res.send(result);
     });
 });
