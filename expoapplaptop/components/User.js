@@ -6,14 +6,15 @@ import {
   Text,
   View,
   Image,
-  ActivityIndicator,
   Button,
   TextInput,
-  text,
   FlatList,
-  Dimensions,
   Pressable,
   SafeAreaView,
+  Dimensions,
+  RefreshControl,
+  ActivityIndicator,
+  TouchableHighlight,
 } from "react-native";
 
 import Swiper from "react-native-swiper";
@@ -28,75 +29,54 @@ import colors from "../page/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Iconn from "react-native-vector-icons/FontAwesome";
+import { concat } from "react-native-reanimated";
 
-// import {icon, image} from '../photo/index'
-
-// import Swiper from 'react-native-swiper'
+const WIDTH = Dimensions.get("screen").width;
+const HEIGHT = Dimensions.get("screen").height;
 
 export default function Home() {
-  // const api = "http://192.168.1.102:3001/"; //
-  const api = "http://192.168.1.8:3001/"; //
+  // api
+  const api = "http://192.168.43.153:3001/";
+  // data
+  const [data, setData] = useState([]);
+  const [dataa, setDataa] = useState([]);
+  const [pagenumber, setpagenumber] = useState(1);
 
-  // const api = "http://192.168.1.100:3001/";
-  // const api = "http://10.22.219.50:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
-  // const api = "http://10.22.222.53:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
-  const [data, setData] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
-  const [dataa, setDataa] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
-  const [pagenumber, setpagenumber] = useState(""); // set number là 1 :> Vì lúc đầu vào giao diện , mình sẽ load trang 1 nên để mặc định là 1
-  const onPressLearnMore = (getpage) => {
-    // code cho button chuyen trang
-    setpagenumber(getpage);
-    //getData();
-  };
+  // loadding
+  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setLoading] = useState(false); // Dòng này là dành cho phần dialog (lúc bấm vào thêm sản phẩm sẽ có)
+  const [refreshControl, setRefreshControl] = useState(false);
 
-  // this.state = {
-  //   searchText: "",
-  //   data: [],
-  //   filteredData: []
-  // };
-
-  const [isLoading, setLoading] = useState(false); // Dòng này là dành cho phần dialog (lúc bấm vào thêm sản phẩm sẽ có)
-  //Thêm Sản Phẩm code
-  const [tenconst, settenconst] = useState(""); // Gọi tên sản phẩm khi show dialog
-  const [loaiconst, setloaiconst] = useState(""); // Gọi Loại sản phẩm khi show dialog
-  //code add product
-
-  // code gọi phân trang
+  // phân trang
   const getData = async () => {
     try {
-      const response = await fetch(api + "sanpham/");
-      // const json = await response.json();
+      const response = await fetch(api + "sanpham/" + pagenumber);
       const json = await response.json();
       console.log(json);
-      // setData(json.movies);
-      setData(json);
+      setData(data.concat(json));
+      console.log(setData);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
   const getDataa = async () => {
     try {
-      const response = await fetch(api + "sanpham/");
-      // const json = await response.json();
+      const response = await fetch(api + "hinhanh/");
       const json = await response.json();
       console.log(json);
       // setData(json.movies);
       setDataa(json);
     } catch (error) {
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
-  // const [isSelected, setSelection] = useState(false);
 
   useEffect(() => {
     getData();
     getDataa();
+    setIsLoading(true);
 
-    fetch("http://192.168.1.8:3001/sanpham")
+    fetch("http://192.168.43.153:3001/sanpham")
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
@@ -105,12 +85,18 @@ export default function Home() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
-  // ////////////////////////////////////////////////////////////////
-  // const { search } = this.state;
+
+    // fetch("http://192.168.1.101:3001/images/")
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     setImage(json.someUrlOrBase64);
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
+  }, [pagenumber]);
 
   // // serach
-  // //
 
   const [search, setSearch] = useState("");
   const [filteredDataSource, setFilteredDataSource] = useState([]);
@@ -128,17 +114,19 @@ export default function Home() {
       setFilteredDataSource(newData);
       setSearch(text);
     } else {
-      // Inserted text is blank
-      // Update FilteredDataSource with masterDataSource
       setFilteredDataSource(masterDataSource);
       setSearch(text);
     }
   };
 
+  const handleReload = () => {
+    setpagenumber(pagenumber + 1);
+    setIsLoading(true);
+  };
+
   return (
     <View style={{ flex: 1 }}>
       {/* List Danh Sách Và Sửa*/}
-
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View
           style={{
@@ -158,7 +146,7 @@ export default function Home() {
               height: 22,
               width: 22,
               marginVertical: 10,
-              marginHorizontal: 5,
+              marginHorizontal: 10,
               opacity: 0.8,
               tintColor: "#0c85b9",
             }}
@@ -173,20 +161,43 @@ export default function Home() {
               width: "100%",
               opacity: 1,
               paddingStart: 10,
+              borderBottomColor: "#252525",
             }}
           />
         </View>
         <Image
-          style={{ height: 30, width: 30, marginEnd: 10, marginTop: 5 }}
+          style={{ height: 25, width: 25, marginEnd: 10, marginTop: 5 }}
           source={icon.iconshopping}
         />
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        onEndReached={handleReload}
+        data={data}
+        renderItem={({ item }) => (
+          <View style={{ flex: 1 }}>
+            <Text style={styles.listItemHorizontal} key={item.mathuonghieu}>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                {item.mathuonghieu}{" "}
+              </Text>
+              <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                {item.tensanpham}
+              </Text>
+              <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                {item.giasanpham}
+              </Text>
+              <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                {item.loaisanpham}
+              </Text>
+            </Text>
+          </View>
+        )}
+      >
         <Swiper
           style={styles.wrapper}
           autoplay
-          height={240}
+          height={200}
           // onMomentumScrollEnd={(e, state, context) =>
           //   console.log("index:", state.index)
           // }
@@ -262,23 +273,28 @@ export default function Home() {
               }}
             />
           </View>
-          <View
-            style={styles.slide}
-            // title={<Text>Learn from Kim K to land that job</Text>}
-          >
+          <View style={styles.slide}>
             <Image
               resizeMode="stretch"
               style={styles.image}
               source={{
-                uri: "https://www.speedmagazine.ph/wp-content/uploads/2020/09/asus-rog-shopee.jpg",
+                uri: "https://www.phucanh.vn/media/news/3001_Postface1-LaptopFlashSale.jpg",
+              }}
+            />
+          </View>
+          <View style={styles.slide}>
+            <Image
+              resizeMode="stretch"
+              style={styles.image}
+              source={{
+                uri: "https://cdn.tgdd.vn/Files/2020/08/12/1279220/thumb_salelaptop_800x450.png",
               }}
             />
           </View>
         </Swiper>
-
         <View style={{}}>
+          {/* horizontal list danh muc san pham  */}
           <FlatList
-            // numColumns={2}
             showsHorizontalScrollIndicator={false}
             horizontal
             style={styles.flatList}
@@ -286,11 +302,11 @@ export default function Home() {
             // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItemHorizontal} key={item.masanpham}>
+                <Text style={styles.listItemHorizontal} key={item.mathuonghieu}>
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     {item.mathuonghieu}{" "}
                   </Text>
-                  {/* <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                     {item.tensanpham}
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
@@ -298,47 +314,57 @@ export default function Home() {
                   </Text>
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                     {item.loaisanpham}
-                  </Text> */}
-                  {/* <Image
-                   style={{
-                    width: 100,
-                    height: 100
-                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image> */}
+                  </Text>
                 </Text>
               </View>
             )}
           />
         </View>
 
+        {/* ///////////////////////////////////////////// */}
+
         <View style={{ flex: 1, marginHorizontal: 2 }}>
+          {/* vertical san pham  */}
           <FlatList
             numColumns={2}
             showsVerticalScrollIndicator={false}
             style={styles.flatList}
-            data={filteredDataSource}
+            data={data}
             onPress
+            onEndReached={handleReload}
             // keyExtractor={({ id }, index) => id} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
-            renderItem={({ item }) => (
+            renderItem={({ item, index }) => (
               <View style={{ flex: 1 }}>
-                <Text style={styles.listItem} key={item.masanpham}>
-                  <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-                    {/* {item.mathuonghieu}{" "} */}
-                  </Text>
-                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
+                <View style={styles.listItem} key={item.masanpham}>
+                  <Image
+                    style={{ width: 150, height: 100 }}
+                    source={{ uri: api + "images/" + item.mahinhanh }}
+                  />
+
+                  <Text style={{ fontSize: 15, fontWeight: "bold", backgroundColor: '#ffff', color: '#252525' , marginVertical: 10}}>
                     {item.tensanpham}
                   </Text>
-                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.giasanpham}
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#0c85b9",
+                      textDecorationLine: 'line-through',
+                      fontFamily: ''
+                    }}
+                  >
+                    {item.giacu.toLocaleString()}
                   </Text>
-                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.loaisanpham}
+                  <Text
+                 
+                    style={{
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      color: "#0c85b9",
+                    }}
+                  >
+                    {item.giasanpham.toLocaleString()}
                   </Text>
-                  <Image
-                   style={{
-                    width: 100,
-                    height: 100
-                  }} source={{ uri: 'http://10.22.219.50:3001/images/1648029169705.jpg' }} > </Image>
-                </Text>
+                </View>
               </View>
             )}
           />
@@ -366,6 +392,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     width: 190,
     height: 230,
+    marginHorizontal: 2,
+    // flexDirection: 'column'
   },
   listItemHorizontal: {
     // flex: 1,
@@ -382,7 +410,9 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 100,
+    marginHorizontal: 5,
   },
+
   page: {
     borderRadius: 100,
   },

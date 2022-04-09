@@ -32,17 +32,21 @@ const Splash = ({ navigation }) => {
           style={styles.logo}
           resizeMode="stretch"
         />
-        <Text style = {{fontFamily: 'sans-serif-condensed', marginVertical: 10 }}> THẾ GIỚI ĐỒ CÔNG NGHỆ</Text>
+        <Text
+          style={{ fontFamily: "sans-serif-condensed", marginVertical: 10 }}
+        >
+          {" "}
+          THẾ GIỚI ĐỒ CÔNG NGHỆ
+        </Text>
       </View>
       <Animatable.View style={[styles.footer, {}]} animation="fadeInUpBig">
         <View style={styles.button}>
           <TouchableOpacity
             style={styles.signIn}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("SignUp")}
           >
             <Text style={styles.textSign}>Đăng ký</Text>
             <MaterialIcons name="navigate-next" color="#fff" size={20} />
-           
           </TouchableOpacity>
         </View>
       </Animatable.View>
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     borderColor: "#252525",
-    // backgroundColor: '#252525' 
+    // backgroundColor: '#252525'
   },
   header: {
     flex: 2,
@@ -94,7 +98,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: "flex-end",
-    padding :20
+    padding: 20,
   },
   signIn: {
     width: height_logo,
@@ -110,9 +114,9 @@ const styles = StyleSheet.create({
   textSign: {
     color: "white",
     fontWeight: "bold",
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     marginHorizontal: 20,
-     padding: 10
+    padding: 10,
     // width: 200
   },
-}); 
+});

@@ -44,7 +44,8 @@ const SignInScreen = ({ navigation }) => {
     }
 
     // fetch("http://192.168.43.153:3001/dangnhap", { // 4g
-    fetch("http://192.168.1.102:3001/dangnhap", { // wifi 
+    // fetch("http://10.22.201.45:3001/dangnhap", { // wifi 
+    fetch("http://192.168.43.153:3001/dangnhap", { // wifi 
       method: "POST",
       headers: {
         Accept: "application/json",

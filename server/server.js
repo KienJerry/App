@@ -63,7 +63,33 @@ let upload = multer({ storage: storage });
 
 //     res.send(result);
 //     });
+
 // });
+
+
+// phân trang 
+
+app.get("/sanpham/:id", function (req, res) {
+  var page = req.params.id;
+
+  var limit = 10;
+  var offset = (page - 1) * limit;
+  var sql =
+    "SELECT * FROM sanpham  order by masanpham  desc  limit "  + offset  + ", " + limit;
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    // console.log(result);
+
+    res.send(result);
+  });
+});
+
+
+
+
+
+
+
 
 // // chi tiết sp
 // app.get('/product/:id/:idsp', function (req, res) {
@@ -270,7 +296,7 @@ app.post("/addsanphamimg", upload.single("file"), (req, res, next) => {
     console.log("đã vào");
     var imgsrc = "http://localhost:3001/images/" + file.filename;
     var sql =
-      "insert into sanpham (tensanpham , loaisanpham , giasanpham , chitietsanpham , hangsanxuat , mahinhanh , thuonghieu ,manhinh , cpu , ram , ocung , trongluong , ngaysanxuat)  values ('" +
+      "insert into sanpham (tensanpham , loaisanpham , giasanpham , chitietsanpham , hangsanxuat , mahinhanh , thuonghieu ,manhinh , cpu , ram , ocung , trongluong , ngaysanxuat, giacu)  values ('" +
       req.body.ten +
       "' , '" +
       req.body.danhmucsanpham +
@@ -296,6 +322,10 @@ app.post("/addsanphamimg", upload.single("file"), (req, res, next) => {
       req.body.trongluong +
       "', '" +
       req.body.date +
+      "', '"
+      +
+
+      req.body.giacu +
       "')";
     console.log(sql);
     con.query(sql, [imgsrc], function (err, result, fields) {
@@ -631,7 +661,7 @@ app.get("/hienthihinhanh", function (req, res) {
 // })
 
 // login
-app.post("/dangky", (req, res) => {
+app.get("/dangky", (req, res) => {
   var sql =
     "SELECT * FROM taikhoan WHERE taikhoan= '" +
     req.body.tentaikhoans +
@@ -663,7 +693,7 @@ app.post("/dangky", (req, res) => {
 });
 
 // check user
-app.post("/dangnhap", (req, res) => {
+app.get("/dangnhap", (req, res) => {
   // console.log("dang nhap");
 
   var sql =

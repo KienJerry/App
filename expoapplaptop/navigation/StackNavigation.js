@@ -1,42 +1,7 @@
-// import React from "react";
-// import { createStackNavigator } from "@react-navigation/stack";
-
 import User from "../components/User";
 import Product from "../components/Product";
 import About from "../components/About";
 import Context from "../components/Context";
-
-// const Stack = createStackNavigator();
-
-// const screenOptionStyle = {
-
-//   headerStyle: {
-//     backgroundColor: "#0c85b9",
-
-//   },
-//   headerTintColor: "white",
-//   // headerBackTitle: "Back",
-// };
-
-// const MainStackNavigator = () => {
-//   return (
-//     <Stack.Navigator screenOptions={{ headerShown : 'true'}}>
-//       <Stack.Screen name="User"   component={User} />
-//     </Stack.Navigator>
-//   );
-// };
-
-// const ContactStackNavigator = () => {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="dddd" screenOptions={{headerShown: 'false'}}   component={Product} />
-//       <Stack.Screen name="About" screenOptions={{headerShown: 'false'}} component={About} />
-//       <Stack.Screen name="Context" component={Context} />
-//     </Stack.Navigator>
-//   );
-// };
-
-// export { MainStackNavigator, ContactStackNavigator };
 
 import * as React from "react";
 import { Text, StatusBar, Button, StyleSheet } from "react-native";
@@ -52,7 +17,6 @@ const MainStackNavigator = () => {
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          
           <Stack.Screen name="About" component={User} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -65,7 +29,6 @@ const ContactStackNavigator = () => {
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: true }}>
-      
           <Stack.Screen name="Thông báo" component={Product} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -77,7 +40,6 @@ const ContactStackPersonnal = () => {
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-      
           <Stack.Screen name="Thông Tin cá nhân" component={About} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -85,4 +47,4 @@ const ContactStackPersonnal = () => {
   );
 };
 
-export { MainStackNavigator, ContactStackNavigator , ContactStackPersonnal};
+export { MainStackNavigator, ContactStackNavigator, ContactStackPersonnal };

@@ -30,6 +30,7 @@ function EmployeeDetail(){
   const [ocung, setocung] = useState('');
   const [trongluong, settrongluong] = useState('');
   const [date, setdate] = useState('');
+  const [giacu, setgiacu] = useState('');
 
   const [search,setSearch] =useState('');
   const [record,setRecord] = useState([]);
@@ -87,6 +88,7 @@ function EmployeeDetail(){
       formData.append('ocung', ocung);
       formData.append('trongluong', trongluong);
       formData.append('date', date);
+      formData.append('giacu', giacu);
 
       console.log( "Tên đã nhập" +tensanpham);
       // console.log(selectedFile);
@@ -161,6 +163,9 @@ function EmployeeDetail(){
               
                 <div className="form-group">
                    <input type="number" name='gia' className="form-control mb-4"  placeholder="Giá Sản Phẩm" onChange={(e) => setgiasanpham(e.target.value)}/>
+                </div>
+                <div className="form-group">
+                   <input type="number" name='giacu' className="form-control mb-4"  placeholder="Giá cũ" onChange={(e) => setgiacu(e.target.value)}/>
                 </div>
                
                 <div className="form-group">
@@ -241,6 +246,7 @@ function EmployeeDetail(){
                 <th>Tên Sản Phẩm</th>
                 <th>Loại Sản Phẩm</th>
                 <th>Giá Sản Phẩm</th>
+                <th>Giá Cũ</th>
                 <th>Hãng Sản Xuất</th>  
                 <th>Hình ảnh</th>
             </tr>
@@ -253,6 +259,7 @@ function EmployeeDetail(){
                 <td>{name.tensanpham}</td>
                 <td>{name.loaisanpham}</td>
                 <td>{name.giasanpham.toLocaleString()}</td>
+                <td>{name.giacu.toLocaleString()}</td>
                 <td>{name.hangsanxuat}</td>
                 <td>
                 <img className="card-img-top hover-shadow" src={api + 'images/' + name.mahinhanh} alt="Chưa có hình ảnh trong file nên không hiển thị" style={{width:"120px", height:"100%"}}/>

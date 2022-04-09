@@ -15,6 +15,7 @@
     "express": "^4.17.3",
     "multer": "^1.4.4",
     "mysql": "^2.18.1",
+    "react-native-fs": "^2.19.0",
     "socket.io": "^4.4.1"
   }
 }
