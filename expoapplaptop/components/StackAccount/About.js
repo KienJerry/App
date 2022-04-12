@@ -6,13 +6,19 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import Swiper from "react-native-swiper";
 // import Icon from "../photo/icon";
 import { image, icon } from "../../photo/index";
 import Icon from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App({ navigation }) {
+  const logout = async() => {
+    await AsyncStorage.removeItem('luutaikhoan')
+    Alert.alert("Vui lòng thoát app")
+}
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: "#0096C7", flexDirection: "row" }}>
@@ -41,6 +47,8 @@ export default function App({ navigation }) {
               {" "}
              
             </Text>
+
+            <Text onPress={logout}>Đăng Xuất</Text>
           </View>
         </View>
       </View>

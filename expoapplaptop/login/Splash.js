@@ -17,9 +17,18 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useTheme } from "@react-navigation/native";
 import { Button } from "react-native-paper";
 import Icon from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Splash = ({ navigation }) => {
   // const { colors } = useTheme();
+  const tokenlogin = async() => {
+    const value = await AsyncStorage.getItem('luutaikhoan')
+    if (value !== null) {
+        navigation.navigate('Home')  
+    }
+}
+
+tokenlogin()
 
   return (
     <View style={styles.container}>

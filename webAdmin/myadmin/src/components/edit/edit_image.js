@@ -55,7 +55,7 @@ const EditEmployee = () => {
      .then(response => {
        console.log("Tên hình ảnh new : " + response)
     })
-    refreshPage(); 
+    // refreshPage(); 
     }
 
   useEffect(() => {

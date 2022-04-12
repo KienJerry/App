@@ -29,8 +29,23 @@ import {
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {icon} from '../photo/index'
+import SignOut from "../login/SignOut";
 
 // const paperTheme = useTheme();
+
+function signOut({navigation}) {
+  // const logout = async() => {
+  //     // await AsyncStorage.removeItem('luutaikhoan')
+  //     navigation.navigate('Product')
+      
+  // }
+  // logout();
+return (
+  <View>
+    <Text>abc</Text>
+  </View>
+);
+}
 
 export function DrawerContent(props) {
   return (
@@ -101,7 +116,7 @@ export function DrawerContent(props) {
           )}
           label="Sign Out"
           onPress={() => {
-            signOut();
+            signOut
           }}
         />
       </Drawer.Section>

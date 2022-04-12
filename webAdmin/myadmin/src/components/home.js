@@ -30,6 +30,7 @@ function EmployeeDetail(){
   const [ocung, setocung] = useState('');
   const [trongluong, settrongluong] = useState('');
   const [date, setdate] = useState('');
+  const [giacu , setgiacu] = useState('');
 
   const [search,setSearch] =useState('');
   const [record,setRecord] = useState([]);
@@ -71,6 +72,18 @@ function EmployeeDetail(){
 
     //code thêm sản phẩm
     const submitEmployeeRecord = async (e) =>{ 
+      if(tensanpham === ""){
+        alert("Bạn Phải nhập tên Sản Phẩm !");
+        refreshPage();
+      }
+      if(giasanpham === ""){
+        alert("Bạn Phải nhập giá sản phẩm");
+        refreshPage();
+      }if(chitietsanpham === ""){
+        alert("Bạn phải nhập thông tin sản phẩm");
+        refreshPage();
+      }else{
+        console.log("Đã chạy vào hàm thêm dữ liệu");
       const formData = new FormData(); 
       console.log(formData);
       // console.log(data);
@@ -87,10 +100,11 @@ function EmployeeDetail(){
       formData.append('ocung', ocung);
       formData.append('trongluong', trongluong);
       formData.append('date', date);
+      formData.append('giacu', giacu);
 
       console.log( "Tên đã nhập" +tensanpham);
       // console.log(selectedFile);
-      axios.post(api +'addsanphamimg/',  formData )
+        axios.post(api +'addsanphamimg/',  formData )
         .then(res =>{
             if(res.data ==='ok'){
               alert("thêm thành công")
@@ -99,8 +113,9 @@ function EmployeeDetail(){
           // refreshPage();
         })
           // handleSubmission();
-         refreshPage();
+        //  refreshPage();
       }
+    }
       
     // Search name 
     const searchRecords = () =>
@@ -134,6 +149,7 @@ function EmployeeDetail(){
         }
       });
       refreshPage();
+      
     }
  
   return(
@@ -160,7 +176,11 @@ function EmployeeDetail(){
                 </div>
               
                 <div className="form-group">
-                   <input type="number" name='gia' className="form-control mb-4"  placeholder="Giá Sản Phẩm" onChange={(e) => setgiasanpham(e.target.value)}/>
+                   <input type="number" name='giacu' className="form-control mb-4"  placeholder="Giá Sản Phẩm Cũ" onChange={(e) => setgiacu(e.target.value)}/>
+                </div>
+
+                <div className="form-group">
+                   <input type="number" name='gia' className="form-control mb-4"  placeholder="Giá Sản Phẩm Mới" onChange={(e) => setgiasanpham(e.target.value)}/>
                 </div>
                
                 <div className="form-group">
@@ -240,7 +260,8 @@ function EmployeeDetail(){
                 <th>ID Sản Phẩm</th>
                 <th>Tên Sản Phẩm</th>
                 <th>Loại Sản Phẩm</th>
-                <th>Giá Sản Phẩm</th>
+                <th>Giá Sản Phẩm Cũ</th>
+                <th>Giá Sản Phẩm Mới</th>
                 <th>Hãng Sản Xuất</th>  
                 <th>Hình ảnh</th>
             </tr>
@@ -252,6 +273,7 @@ function EmployeeDetail(){
                 <td>{name.masanpham}</td>
                 <td>{name.tensanpham}</td>
                 <td>{name.loaisanpham}</td>
+                <td style={{textDecorationLine : 'line-through'}}>{name.giacu.toLocaleString()}</td>
                 <td>{name.giasanpham.toLocaleString()}</td>
                 <td>{name.hangsanxuat}</td>
                 <td>

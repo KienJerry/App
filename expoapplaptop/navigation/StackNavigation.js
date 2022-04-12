@@ -1,7 +1,7 @@
 // import React from "react";
 // import { createStackNavigator } from "@react-navigation/stack";
 
-import User from "../components/User";
+import User from "../components/StackProduct/RootStackProduct";
 import Product from "../components/Product";
 import About from "../components/StackAccount/About";
 import Context from "../components/Context";
@@ -54,7 +54,6 @@ const MainStackNavigator = () => {
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          
           <Stack.Screen name="About" component={User} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -79,7 +78,6 @@ const ContactStackPersonnal = () => {
     <SafeAreaProvider>
       <NavigationContainer independent={true}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-      
           <Stack.Screen name="Thông Tin cá nhân" component={RootStackAccount} />
         </Stack.Navigator>
       </NavigationContainer>
@@ -87,4 +85,16 @@ const ContactStackPersonnal = () => {
   );
 };
 
-export { MainStackNavigator, ContactStackNavigator , ContactStackPersonnal};
+const RootStackNavigator = () => {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer independent={true}>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="RootStack" component={RootStack} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
+
+export { MainStackNavigator, ContactStackNavigator , ContactStackPersonnal , RootStackNavigator};
