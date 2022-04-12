@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { DrawerContent } from "../navigation/DrawerContact";
-import User from "./User";
+import User from "./StackProduct/User";
 import TabNavigator from "../navigation/TabNavigation";
 
 const Drawer = createDrawerNavigator();

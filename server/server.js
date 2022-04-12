@@ -520,7 +520,7 @@ app.get('/taikhoan', function (req, res) {
     });
 });
 
-//Chỉnh sửa chi tiết Sản Phẩm lấy theo ID
+//Tìm kiếm chi tiết tài khoản lấy theo ID
 app.get('/taikhoan/:idsp', function (req, res) {
   var page = req.params.idsp;
   

@@ -14,11 +14,14 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useTheme } from "react-native-paper";
+import { CheckBox } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
  const api = "http://192.168.43.70:3001/"
 const SignInScreen = ({ navigation }) => {
+  const [check , setCheck] = useState(false);
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -33,7 +36,7 @@ const SignInScreen = ({ navigation }) => {
   const [tendangnhap, onChangetendangnhap] = useState("");
   const [passdangnhap, onChangepassdangnhap] = useState("");
 
-  const checkuser = () => {
+  const checkuser = async() => {
     if (tendangnhap === "" || tendangnhap === null) {
       Alert.alert("Cảnh báo", "Tên không được bỏ trống!");
       return;
@@ -43,7 +46,7 @@ const SignInScreen = ({ navigation }) => {
       Alert.alert("Cảnh báo", "Pass không được bỏ trống!");
       return;
     }
-
+  
     fetch( api + "dangnhap", {
       method: "POST",
       headers: {
@@ -56,8 +59,13 @@ const SignInScreen = ({ navigation }) => {
       }),
     })
       .then((response) => response.json())
-      .then((res) => {
+      .then(async(res) => {
         if (res.success === true) {
+          if(check === true){
+            await AsyncStorage.setItem("luutaikhoan", tendangnhap)
+            }else{ 
+                console.log("Bạn chưa lưu tài khoản")   
+            }
           navigation.navigate("Home");
         } else {
           Alert.alert("Cảnh báo", "" + res.message);
@@ -189,6 +197,7 @@ const SignInScreen = ({ navigation }) => {
             autoCapitalize="none"
           />
         </View>
+
         {data.isValidPassword ? null : (
           <Animatable.View animation="fadeInLeft" duration={500}>
             <Text style={styles.errorMsg}>
@@ -196,6 +205,11 @@ const SignInScreen = ({ navigation }) => {
             </Text>
           </Animatable.View>
         )}
+
+          <CheckBox
+          checked={check}
+          onPress={() => setCheck(!check)}
+          title={"Lưu Mật Khẩu"}></CheckBox>
 
         <TouchableOpacity>
           <Text style={{ color: "#0096C7", marginTop: 15 }}>

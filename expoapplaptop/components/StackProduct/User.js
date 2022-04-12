@@ -18,14 +18,14 @@ import {
 } from "react-native";
 
 import Swiper from "react-native-swiper";
-import { image, icon } from "../photo/index";
+import { image, icon } from "../../photo/index";
 const { width } = Dimensions.get("window");
 
 import { Input, SearchBar } from "react-native-elements";
 import React, { useState, useEffect, Component } from "react";
 import Dialog from "react-native-dialog";
 import { LinearGradient } from "expo-linear-gradient";
-import colors from "../page/Colors";
+import colors from "../../page/Colors";
 import { ScrollView } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Iconn from "react-native-vector-icons/FontAwesome";
@@ -34,7 +34,7 @@ import Iconn from "react-native-vector-icons/FontAwesome";
 
 // import Swiper from 'react-native-swiper'
 
-export default function Home() {
+export default function Home({ navigation }) {
   const api = "http://192.168.43.70:3001/"; //
   // const api = "http://192.168.1.100:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
   // const api = "http://10.22.219.50:3001/"; // local 192.168.43.70 , là lấy ở phần setting của thông tin wifi .
@@ -155,8 +155,9 @@ export default function Home() {
             }
           />
         </View>
+        <TouchableOpacity onPress={() => navigation.navigate("GioHang")}>
           <Image style ={{height: 30, width: 30, marginEnd: 10 , marginTop: 5}} source={icon.iconshopping}/>
-
+          </TouchableOpacity>
       </View>
 
       <ScrollView >
@@ -291,8 +292,26 @@ export default function Home() {
             // keyExtractor={item => item.id}
             // keyExtractor={({ item }, index) => item} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1 , }}>
                 <View style={styles.listItem} key={item.masanpham}>
+                  <TouchableOpacity onPress={() => navigation.navigate("ChiTietSanPham" , {
+                    masanpham : item.masanpham,
+                    tensanpham : item.tensanpham,
+                    loaisanpham : item.loaisanpham,
+                    giasanpham : item.giasanpham,
+                    giacu : item.giacu,
+                    chitietsanpham : item.chitietsanpham,
+                    hangsanxuat : item.hangsanxuat,
+                    mahinhanh : item.mahinhanh,
+                    thuonghieu : item.thuonghieu ,
+                    manhinh : item.manhinh , 
+                    cpu : item.cpu ,
+                    ram : item.ram ,
+                    ocung : item.ocung ,
+                    trongluong : item.trongluong ,
+                    ngaysanxuat : item.ngaysanxuat
+
+                  })}>
                   <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                     {item.tensanpham}{" "}
                   </Text>
@@ -302,10 +321,8 @@ export default function Home() {
                   <Text style={{ fontSize: 10, fontWeight: "bold" }}>
                     {item.loaisanpham}
                   </Text>
-                  <Text style={{ fontSize: 10, fontWeight: "bold" }}>
-                    {item.chitietsanpham}
-                  </Text> 
                   <Image source={{uri:  api +'images/' + item.mahinhanh}} style={{width: '100%', height:100}} />
+                  </TouchableOpacity>
                 </View>
               </View>
             )}

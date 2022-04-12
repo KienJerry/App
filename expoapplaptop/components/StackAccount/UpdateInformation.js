@@ -1,6 +1,6 @@
 import React ,{ useState, useEffect, Component } from "react";
 import { View, Text , StyleSheet , Image , TouchableOpacity , Button, Platform, Alert , FlatList , VirtualizedList} from "react-native";
-// import CheckBox from 'react-native-check-box'
+import { RadioButton } from 'react-native-paper';
 import { DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { image, icon } from "../../photo/index";
@@ -9,7 +9,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { event } from "react-native-reanimated";
 import {CheckBox} from 'react-native-elements';
 import { TextInput } from "react-native-gesture-handler";
-// import { FlatList } from "react-native-gesture-handler";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ViewBoxesWithColorAndText({ navigation }){
   const [userr, setuserr] = useState();
@@ -27,6 +27,7 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [nam , setNam] = useState(true);
   const [nu , setNu] = useState(false);
   const [khac , setKhac] = useState(false);
+
 
     //Code Date Time
   const onChange = (event, selectedDate) => {
@@ -47,7 +48,17 @@ export default function ViewBoxesWithColorAndText({ navigation }){
     setShow(true);
     setMode(currentMode);
   }
-
+//lấy dữ liệu của mảng Account
+const getItemList = async() =>{
+  try{
+    const data = await AsyncStorage.getItem('luutaikhoan');
+    const output = JSON.parse(data);
+    setStorageDataList(output);
+    console.log(output);
+  }catch(err){
+    console.error("Lỗi lấy dữ liệu");
+  }
+}
 
 //Code hiển thị thông tin tài khoản
   const getData = async () => {
@@ -63,8 +74,24 @@ export default function ViewBoxesWithColorAndText({ navigation }){
 }, []);
 
 //code check box
-const hobbies = []
+const radiobtn_nam = () => {
+    setNam(true);
+    setNu(false);
+    setKhac(false);
+}
+const radiobtn_nu = () => {
+  setNam(false);
+  setNu(true);
+  setKhac(false);
+}
+const radiobtn_khac = () => {
+  setNam(false);
+  setNu(false);
+  setKhac(true);
+}
 
+// code update
+const hobbies = []
 const clickbox = () => {
   if(nam === true){
     hobbies.push("Nam");
@@ -78,7 +105,7 @@ const clickbox = () => {
 
   return (
    
-    <View style={{backgroundColor : 'white'}}>
+    <View style={{backgroundColor : 'white'}} key = {name.tennguoidung}>
      <FlatList 
     
       keyExtractor={({ name }, index) => name }
@@ -89,12 +116,12 @@ const clickbox = () => {
      renderItem = {({item}) => (
 
       <View  style={{width : '100%', height : '100%'}} key= {item.mataikhoan}>
-      <View style = {styles.container}>
+      <View style = {styles.container} key = {item.tennguoidung}>
        <Icon size={30} style = {{marginLeft: 10}} name="chevron-left" onPress={() => navigation.navigate("About")}/>
          <Text style = {{paddingLeft : 10 , fontSize: 20, fontWeight: "bold"}}> Cập Nhật Thông Tin </Text>   
       </View>
       <View style = {styles.thong_tin} key= {item.mataikhoan}>
-      <View style={{ backgroundColor: "#0096C7", flexDirection: "row" }}>
+      <View style={{ backgroundColor: "#0096C7", flexDirection: "row" }} key = {item.tennguoidung}>
         <View style={{ flexDirection: "row", position: "relative"}} >
           <Image
             style={{
@@ -121,10 +148,10 @@ const clickbox = () => {
         
       </View>
 
-    <View style = {styles.input}>
+    <View style = {styles.input} key = {item.mataikhoan}>
       <OutlineInput
-        //  value={name}
-        //  defaultValue={item.tennguoidung}
+      key={item.tennguoidung}
+         value={name}
          onChangeText={(e) => setName(e)}
         label="Họ và Tên"
         autoCapitalize="words"
@@ -135,16 +162,13 @@ const clickbox = () => {
         passiveLabelColor="#bbb7ff"
         passiveValueColor="#bbb7ff"
         placeholder = "abcsa"
-      ></OutlineInput>
-      <TextInput 
-      placeholder = "abc"
-      // value={name}
-      defaultValue={item.tennguoidung}
-      ></TextInput>
+      > </OutlineInput>
+      <Text>{item.tennguoidung}</Text>
       <View style = {styles.inputdate}>
       <OutlineInput
+      key={item.namsinh}
         // maxLength = {0}
-        value={item.namsinh}
+        value={text}
         // onChangeText={(e: string) => setEmail(e)}
         label="Ngày-Tháng-Năm Sinh"
         // error = "true"
@@ -167,15 +191,27 @@ const clickbox = () => {
         onChange={onChange}/>
           )}
       </View>
+      <Text>{item.namsinh}</Text>
       </View>
       <Text style={styles.text_gioi_tinh}>Giới Tính</Text>
-      <View style={styles.gioi_tinh}>
+      <View style={styles.gioi_tinh} key={item.gioitinh}>
       
       <View style={styles.containera}>
+      {/* <RadioButton
+      color="red"
+        value="first"
+        status={ checked === 'first' ? 'checked' : 'unchecked' }
+        onPress={() => setChecked('first')}
+      />
+      <RadioButton
+        value="second"
+        status={ checked === 'second' ? 'checked' : 'unchecked' }
+        onPress={() => setChecked('second')}
+      /> */}
       <CheckBox
             checked = {nam}
             title={"Nam"}
-            onPress = {() => setNam(!nam || setNam(false === setNu(true)))}
+            onPress = {radiobtn_nam}
             
         />
       </View>
@@ -184,7 +220,7 @@ const clickbox = () => {
             checked = {nu}
             checkedColor = 'red'
             title={"Nữ"}
-            onPress = {() => setNu(!nu || setNu(true === setNam(false)))}
+            onPress = {radiobtn_nu}
         />
       </View><View style={styles.containeraaa}>
       <CheckBox
@@ -192,14 +228,15 @@ const clickbox = () => {
             checkedColor = '#6f6f6f'
             title={"Khác"}
             checkedTitle = {"B.đuê"}
-            onPress = {() => setKhac(!khac)}
+            onPress = {radiobtn_khac}
         />
       </View>
       </View>
       
       <View style = {styles.input}>
-      <OutlineInput
-         value={item.diachi}
+      <OutlineInput 
+      key={item.diachi}
+         value={diachi}
          onChangeText={(e) => setDiachi(e)}
         label="Địa chỉ"
         autoCapitalize="words"
@@ -210,23 +247,24 @@ const clickbox = () => {
         passiveLabelColor="#bbb7ff"
         passiveValueColor="#bbb7ff"
       ><TextInput></TextInput></OutlineInput>
+      <Text>{item.diachi}</Text>
 
       </View>
       
-                <View style={styles.css_update}>
+      <View style={styles.css_update}>
                   <TouchableOpacity style={styles.updates} onPress= {() => Alert.alert("Đã bấm vào nút cập nhật") === navigation.navigate("About") }>
                     <Text style={styles.textSign}>Cập Nhật</Text>
                   </TouchableOpacity>
-                </View>
+                </View>                
 
     </View>
    
     </View>
+    
 
      )}
     />
      
-
     </View>
 
     
