@@ -14,6 +14,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function ViewBoxesWithColorAndText({ navigation }){
   const [userr, setuserr] = useState();
   const [name, setName] = useState('');
+  const [id, setId] = useState();
   const [diachi , setDiachi] = useState('');
   const api = "http://192.168.43.70:3001/"
 
@@ -28,7 +29,6 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [nu , setNu] = useState(false);
   const [khac , setKhac] = useState(false);
 
-
     //Code Date Time
   const onChange = (event, selectedDate) => {
     
@@ -38,35 +38,26 @@ export default function ViewBoxesWithColorAndText({ navigation }){
     
     let tempDate = new Date(currentDate);
     let fDate = tempDate.getDate()+'/'+(tempDate.getMonth()+1)+'/'+tempDate.getFullYear();
-    // let fTime = 'Hours: ' + tempDate.getHours() + '| Minutes' + tempDate.getMinutes();
-    // setText(fDate + '\n' + fTime);
     setText(fDate);
-    // console.log(fDate + '(' + fTime + ')');
   }
 
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
   }
-//lấy dữ liệu của mảng Account
-const getItemList = async() =>{
-  try{
-    const data = await AsyncStorage.getItem('luutaikhoan');
-    const output = JSON.parse(data);
-    setStorageDataList(output);
-    console.log(output);
-  }catch(err){
-    console.error("Lỗi lấy dữ liệu");
-  }
-}
+
+
+
+
 
 //Code hiển thị thông tin tài khoản
   const getData = async () => {
-     const response = await fetch(api + 'taikhoan/kien123@gmail.com');
+     const value = await AsyncStorage.getItem('luutaikhoan');
+     const response = await fetch(api + 'taikhoan/' + value);
      const json = await response.json();
     //  setData(json.movies);
     // console.log(json);
-    console.log(json);
+    // console.log(json);
      setuserr(json);
  }
  useEffect(() => {
@@ -89,8 +80,7 @@ const radiobtn_khac = () => {
   setNu(false);
   setKhac(true);
 }
-
-// code update
+// code update checkbox
 const hobbies = []
 const clickbox = () => {
   if(nam === true){
@@ -103,6 +93,32 @@ const clickbox = () => {
   Alert.alert("Tích vào : " + hobbies);
 }
 
+//code cập nhật thông tin 
+const editproduct = () => {
+  console.log('đây là id : ' + id);
+
+  fetch(api + 'editaccount/editid', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      editten: name,
+      editdiachi: diachi,
+      idUser: id
+      // edithinhanh: hinhanhconst,
+      // editchitiet: chitietconst
+    })
+  })
+    .then((response) => {
+      if (response == 'okedit') {
+        alert("xóa thành công")
+      }
+    });
+    Alert.alert("Update thành công")
+}
+
   return (
    
     <View style={{backgroundColor : 'white'}} key = {name.tennguoidung}>
@@ -113,8 +129,8 @@ const clickbox = () => {
      style={{backgroundColor : 'white'}}
      showsVerticalScrollIndicator={false}
      data={userr}
-     renderItem = {({item}) => (
-
+     renderItem = {({item}) => (     
+     
       <View  style={{width : '100%', height : '100%'}} key= {item.mataikhoan}>
       <View style = {styles.container} key = {item.tennguoidung}>
        <Icon size={30} style = {{marginLeft: 10}} name="chevron-left" onPress={() => navigation.navigate("About")}/>
@@ -137,6 +153,9 @@ const clickbox = () => {
               <Text style={{ marginVertical: 2, color: "#fff" , fontWeight: "bold" , fontSize : 15 }}>
                   {item.taikhoan}
               </Text>
+              <Text style={{ marginVertical: 2, color: "#fff" , fontWeight: "bold" , fontSize : 15 }}>
+                 ID : 000000000{item.mataikhoan}
+              </Text>
 
               <View style={styles.button}>
                   <TouchableOpacity style={styles.signIn}>
@@ -152,7 +171,7 @@ const clickbox = () => {
       <OutlineInput
       key={item.tennguoidung}
          value={name}
-         onChangeText={(e) => setName(e)}
+         onChangeText={(e) => setName(e) === setId(item.mataikhoan)}
         label="Họ và Tên"
         autoCapitalize="words"
         activeValueColor="#6c63fe"
@@ -252,7 +271,8 @@ const clickbox = () => {
       </View>
       
       <View style={styles.css_update}>
-                  <TouchableOpacity style={styles.updates} onPress= {() => Alert.alert("Đã bấm vào nút cập nhật") === navigation.navigate("About") }>
+                  {/* <TouchableOpacity style={styles.updates} onPress= {() => setId(item.mataikhoan) === editproduct() === navigation.navigate("About") }> */}
+                  <TouchableOpacity style={styles.updates} onPress= {() => setId(item.mataikhoan) === editproduct()}>
                     <Text style={styles.textSign}>Cập Nhật</Text>
                   </TouchableOpacity>
                 </View>                
