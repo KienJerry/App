@@ -358,7 +358,7 @@ app.post('/deleteimgsp', function(req, res){
 // Phân Trang Sản Phẩm
 app.get('/sanpham/:masanpham', function (req, res) {
   var page = req.params.masanpham;
-  var limit = 3;
+  var limit = 4;
   var offset = (page -1)*limit;
   var sql = "SELECT * FROM sanpham order by masanpham desc  limit "+ offset + ", " + limit ;
   con.query(sql , function (err, result, fields) {

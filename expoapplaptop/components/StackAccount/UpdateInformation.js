@@ -16,7 +16,7 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [name, setName] = useState('');
   const [id, setId] = useState();
   const [diachi , setDiachi] = useState('');
-  const api = "http://192.168.43.70:3001/"
+  const api = "http://192.168.43.153:3001/"
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 

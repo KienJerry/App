@@ -22,10 +22,23 @@ import { LinearGradient } from "expo-linear-gradient";
 import Feather from "react-native-vector-icons/Feather";
 import { icon } from "../photo";
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as Notification from "expo-notifications";
+import * as Permission from "expo-permissions";
+
+
+Notification.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: true,
+      shouldShowAlert: true,
+    };
+  },
+});
+
 
 const SignUpScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
-  const api = "http://192.168.43.70:3001/"
+  const api = "http://192.168.43.153:3001/"
   const [tendangkys, settendangky] = useState("");
   const [passdangkys, setpassdangky] = useState("");
 
@@ -72,6 +85,18 @@ const SignUpScreen = ({ navigation }) => {
         }
       });
     Alert.alert("Thông báo", "Tạo thành công!");
+
+
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "KI DO",
+        body: " Bạn đã đăng ký thành công ",
+      },
+      trigger: {
+        seconds: 1,
+      },
+    });
+
   };
 
   // đay là thông báo poup
@@ -112,6 +137,34 @@ const SignUpScreen = ({ navigation }) => {
         </View>
       </Modal>
     );
+  };
+
+  // Notification 
+  useEffect(() => {
+    Permission.getAsync(Permission.NOTIFICATIONS)
+      .then((response) => {
+        if (response.status !== "granted") {
+          return Permission.askAsync(Permission.NOTIFICATIONS);
+        }
+        return response;
+      })
+      .then((response) => {
+        if (response.status !== "granted") {
+          return;
+        }
+      });
+  }, []);
+
+  const handleNotification = () => {
+    Notification.scheduleNotificationAsync({
+      content: {
+        title: "KI DO",
+        body: " Bạn đã đăng ký thành công ",
+      },
+      trigger: {
+        seconds: 1,
+      },
+    });
   };
 
   return (
