@@ -1,16 +1,19 @@
 import React, { useState , useEffect } from 'react';
-import { Text, View, StyleSheet , Image , TouchableOpacity} from 'react-native';
+import { Text, View, StyleSheet , Image , TouchableOpacity, ScrollView} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { CheckBox } from "react-native-elements";
 import InputSpinner from "react-native-input-spinner";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const api = "http://192.168.43.70:3001/";
 const GioHang = ({navigation}) => {
   const [check , setCheck] = useState(false);
   const [storageDataList , setStorageDataList] = useState([]);
+  const [data, setData] = useState();
 
   useEffect(() => {
+    // getData();
     //Phải viết function , gọi mỗi Item là bị lỗi trùng lặp 
     async function tempFunction() {
       await getItemList();
@@ -21,6 +24,7 @@ const GioHang = ({navigation}) => {
     };
 
     // getItemList();
+    
   } , []);
 
     //lấy dữ liệu của mảng
@@ -35,6 +39,14 @@ const GioHang = ({navigation}) => {
       }
     }
 
+    // gọi thông tin chi tiết sản phẩm
+//   const getData = async () => {
+//     const response = await fetch(api + 'editsanpham/');
+//     const json = await response.json();
+//   //  console.log(json);
+//    setData(json);
+// }
+
   return (
     <View style= {{width : '100%', height : '100%', backgroundColor : '#ededed'}}>
         <View style = {styles.container} >
@@ -42,59 +54,61 @@ const GioHang = ({navigation}) => {
           <Text style = {{paddingLeft : 10 , fontSize: 20, fontWeight: "bold" , color: "#459ad8"}}> Giỏ Hàng </Text>     
         </View>
         
-          <View style ={styles.background_cart}>
-              <View style={styles.background_two} >
-                  <Text numberOfLines={2} style={styles.text_name}>Tên Sản Phẩm Nguyễn Thế Kiên học trường FPt Poly Technic Tên Sản Phẩm Nguyễn Thế Kiên học trường FPt Poly Technic </Text>
-                  <Text numberOfLines={2} style={styles.text_name_one}>- Hãng Sản Xuất</Text>
-                  <View style={styles.gia}>
-                    <Text style={styles.giasp}>{"50000".toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} đ</Text>
-                    <Text style={styles.giasp_cu}>{"55000".toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} đ</Text>
-                  </View>
-                  <View style={styles.css_spin}>
-                      <View style={styles.spinner_css}>
-                          <InputSpinner
-                            max={5}
-                            min={1}
-                            step={1}
-                            color = {"#40c5f4"}
-                            colorMax={"red"}
-                            colorMin={"red"}
-                            buttonFontSize = {20}
-                            fontSize = {17}
-                            colorPress={"red"}
-                            skin="modern"
-                            
-                            // value={this.state.number}
-                            // onChange={(num) => {
-                            //   console.log(num);
-                            // }}
-                          />
+        <ScrollView>
+                <View style ={styles.background_cart}>
+                  <View style={styles.background_two} >
+                      <Text numberOfLines={2} style={styles.text_name}>Tên Sản phẩm</Text>
+                      <Text numberOfLines={2} style={styles.text_name_one}>- Hãng Sản Xuất</Text>
+                      <View style={styles.gia}>
+                        <Text style={styles.giasp}>{"50000".toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} đ</Text>
+                        <Text style={styles.giasp_cu}>{"55000".toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.")} đ</Text>
                       </View>
-                      <Text style={styles.text_del}>Xóa</Text>
+                      <View style={styles.css_spin}>
+                          <View style={styles.spinner_css}>
+                              <InputSpinner
+                                max={5}
+                                min={1}
+                                step={1}
+                                color = {"#40c5f4"}
+                                colorMax={"red"}
+                                colorMin={"red"}
+                                buttonFontSize = {20}
+                                fontSize = {17}
+                                colorPress={"red"}
+                                skin="modern"
+                                
+                                // value={this.state.number}
+                                // onChange={(num) => {
+                                //   console.log(num);
+                                // }}
+                              />
+                          </View>
+                          <Text style={styles.text_del}>Xóa</Text>
+                      </View>
+                      
+                      
                   </View>
-                  
-                  
+                  <View style={styles.background_one} >
+                    <View style={{justifyContent: "center", flex:1 , marginLeft: -10 ,}}>
+                      <CheckBox 
+                        checked={check}
+                        onPress={() => setCheck(!check)}></CheckBox>
+                    </View>
+                    <View style={{justifyContent: "center", alignItems: "flex-end", flex:5}}>
+                        <Image
+                            style={styles.image}
+                            source={{
+                              uri:  "http://192.168.43.70:3001/images/1648187877851.jpg",
+                            }}
+                          />
+                    </View>
+                  </View>
               </View>
-              <View style={styles.background_one} >
-                <View style={{justifyContent: "center", flex:1 , marginLeft: -10 ,}}>
-                  <CheckBox 
-                    checked={check}
-                    onPress={() => setCheck(!check)}></CheckBox>
-                </View>
-                <View style={{justifyContent: "center", alignItems: "flex-end", flex:5}}>
-                    <Image
-                        style={styles.image}
-                        source={{
-                          uri:  "http://192.168.43.70:3001/images/1648187877851.jpg",
-                        }}
-                      />
-                </View>
-              </View>
-          </View>
 
-          <View style={styles.list}>
+              <View style={styles.list}>
         <Text>List</Text>
         {storageDataList.map((item, index) => {
+          // console.log(storageDataList)
           return (
             <Text style={{marginVertical: 10}} key={index}>
               {item}
@@ -102,6 +116,8 @@ const GioHang = ({navigation}) => {
           );
         })}
       </View>
+        </ScrollView>
+          
 
           <View style={{alignItems : "flex-end" , backgroundColor : 'white' , flexDirection: "row",}}>
             <View style={styles.tong_css}>
@@ -114,6 +130,8 @@ const GioHang = ({navigation}) => {
                   <Text style={styles.submitText}>Mua Hàng (0)</Text>
             </TouchableOpacity>
           </View>
+
+          
 
         
     </View>

@@ -536,7 +536,7 @@ app.get('/taikhoan/:idsp', function (req, res) {
 //sửa thông tin người dùng
 app.post('/editaccount/editid', function(req, res){
   console.log("Vào server cập nhật thành công")
-  var sql = "UPDATE taikhoan SET tennguoidung = ('"+req.body.editten+"'), diachi =('"+req.body.editdiachi+"')  where mataikhoan = ('"+req.body.idUser+"')";
+  var sql = "UPDATE taikhoan SET tennguoidung = ('"+req.body.editten+"'), namsinh =('"+req.body.date+"') , gioitinh =('"+req.body.gioitinh+"'), diachi =('"+req.body.editdiachi+"')  where mataikhoan = ('"+req.body.idUser+"')";
   console.log(sql);
   con.query(sql, function(err, result, fields){
     if(err) throw err;
