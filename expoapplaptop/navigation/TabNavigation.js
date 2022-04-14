@@ -13,21 +13,40 @@ const BottomTabNavigator = () => {
       initialRouteName="User"
       activeColor="#fff"
       barStyle={{ backgroundColor: "#252525" }}
+
     >
       <Tab.Screen
         name="Trang Chủ"
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
         component={MainStackNavigator}
+        options={{
+          // tabBarLabel: 'Updates',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={23} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Thông báo"
-        options={{ headerShown: true }}
+        // options={{ headerShown: true }}
         component={ContactStackNavigator}
+        options={{
+          // tabBarLabel: 'Updates',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="bell" color={color} size={23} />
+          ),
+        }}
       />
       <Tab.Screen
         name="Cá nhân"
-        options={{ headerShown: false }}
+        // options={{ headerShown: false }}
         component={ContactStackPersonnal}
+        options={{
+          // tabBarLabel: 'Updates',
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="account" color={color} size={23} />
+          ),
+        }}
       />
     </Tab.Navigator>
   );

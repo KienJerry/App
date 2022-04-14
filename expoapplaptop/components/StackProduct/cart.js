@@ -85,7 +85,7 @@ const GioHang = ({navigation}) => {
                     <Image
                         style={styles.image}
                         source={{
-                          uri:  "http://192.168.43.70:3001/images/1648187877851.jpg",
+                          uri:  "http://192.168.43.153:3001/images/1648187877851.jpg",
                         }}
                       />
                 </View>
