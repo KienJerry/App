@@ -17,11 +17,11 @@ import { useTheme } from "react-native-paper";
 import { CheckBox } from "react-native-elements";
 import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
- const api = "http://192.168.43.153:3001/"
-const SignInScreen = ({ navigation }) => {  
-  const [check , setCheck] = useState(false);
+const api = "http://192.168.43.153:3001/";
+const SignInScreen = ({ navigation }) => {
+  const [check, setCheck] = useState(false);
   const [data, setData] = React.useState({
     username: "",
     password: "",
@@ -36,7 +36,7 @@ const SignInScreen = ({ navigation }) => {
   const [tendangnhap, onChangetendangnhap] = useState("");
   const [passdangnhap, onChangepassdangnhap] = useState("");
 
-  const checkuser = async() => {
+  const checkuser = async () => {
     if (tendangnhap === "" || tendangnhap === null) {
       Alert.alert("Cảnh báo", "Tên không được bỏ trống!");
       return;
@@ -46,8 +46,8 @@ const SignInScreen = ({ navigation }) => {
       Alert.alert("Cảnh báo", "Pass không được bỏ trống!");
       return;
     }
-  
-    fetch( api + "dangnhap", {
+
+    fetch(api + "dangnhap", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -59,13 +59,13 @@ const SignInScreen = ({ navigation }) => {
       }),
     })
       .then((response) => response.json())
-      .then(async(res) => {
+      .then(async (res) => {
         if (res.success === true) {
-          if(check === true){
-            await AsyncStorage.setItem("luutaikhoan", tendangnhap)
-            }else{ 
-                console.log("Bạn chưa lưu tài khoản")   
-            }
+          if (check === true) {
+            await AsyncStorage.setItem("luutaikhoan", tendangnhap);
+          } else {
+            console.log("Bạn chưa lưu tài khoản");
+          }
           navigation.navigate("Home");
         } else {
           Alert.alert("Cảnh báo", "" + res.message);
@@ -206,10 +206,11 @@ const SignInScreen = ({ navigation }) => {
           </Animatable.View>
         )}
 
-          <CheckBox
+        <CheckBox
           checked={check}
           onPress={() => setCheck(!check)}
-          title={"Lưu Mật Khẩu"}></CheckBox>
+          title={"Lưu Mật Khẩu"}
+        ></CheckBox>
 
         <TouchableOpacity>
           <Text style={{ color: "#0096C7", marginTop: 15 }}>

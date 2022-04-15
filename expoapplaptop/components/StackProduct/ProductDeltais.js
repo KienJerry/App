@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import { Text, View ,StyleSheet , Image , FlatList , TouchableOpacity, Alert } from 'react-native';
+import { Text, View ,StyleSheet , Image , FlatList , TouchableOpacity, Alert , SafeAreaView , Button} from 'react-native';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { image, icon } from "../../photo/index";
 import { Badge } from 'react-native-paper';
@@ -7,10 +7,10 @@ import { Rating } from 'react-native-ratings';
 import Swiper from "react-native-swiper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api = "http://192.168.43.153:3001/";
+const api = "http://192.168.43.70:3001/";
 const YourApp = ({ route, navigation , x }) => {
   //lấy thông tin từ bên sản phẩm qua , giống như url
-  const { masanpham , giasanpham ,giacu , tensanpham} = route.params;
+  const { masanpham , giasanpham ,giacu , tensanpham , hangsanxuat , mahinhanh} = route.params;
 
   var MaSanPham = JSON.stringify(masanpham);
   const [data, setData] = useState();
@@ -18,6 +18,7 @@ const YourApp = ({ route, navigation , x }) => {
   const[soluongslider , setsoluongslider] = useState([]);
   const [inputCart , setInputCart] = useState('');
   const [storageDataList , setStorageDataList] = useState([]);
+  const [shouldShow, setShouldShow] = useState(false);
 
 // gọi thông tin chi tiết sản phẩm
   const getData = async () => {
@@ -60,12 +61,22 @@ const image_lider = [
 
  //thêm giỏ hàng  (Lưu dạng mảng) 
  const addItemToList = async() => {
+   const ListItem = {
+     image : mahinhanh,
+     name : tensanpham ,
+     manufacturer : hangsanxuat ,
+     giamoi : giasanpham ,
+     giacu : giacu
+   }
   try{
-    storageDataList.push(tensanpham); 
-    const output = JSON.stringify(storageDataList);
-    // console.log(output)
-    await AsyncStorage.setItem('cartitem', output);
-    setInputCart('');
+    storageDataList.push(ListItem); 
+    const output = [
+      ['cartitem', JSON.stringify(storageDataList)]
+    ]
+    // console.log(storageDataList)
+    await AsyncStorage.multiSet(output);
+    // setInputCart('');
+    // console.log(inputCart);
 
     Alert.alert('Thêm thành công');
     navigation.navigate('GioHang')
@@ -159,7 +170,23 @@ const image_lider = [
             <View style={styles.thongtinchitiet} key={item.chitietsanpham}>
               <View style={styles.thongtinchitiet_css_2}>
                 <Text style={styles.thongtinchitiet_text}>Mô tả sản phẩm</Text>
-                <Text style={styles.thongtinchitiet_text_thuong}>- {item.chitietsanpham}</Text>
+                
+                <SafeAreaView style={{ flex: 1 }}>
+                         {!shouldShow ? (
+                          <Text numberOfLines={4} style={styles.thongtinchitiet_text_thuong}>- {item.chitietsanpham}</Text>
+                        ) : null}
+                      
+                      <View style={{}}>
+                        
+                        {shouldShow ? (
+                          <Text style={styles.thongtinchitiet_text_thuong}>- {item.chitietsanpham}</Text>
+                        ) : null}
+                        <Text 
+                        style ={styles.show_css}
+                          onPress={() => setShouldShow(!shouldShow)}
+                        >Xem thêm ...</Text>
+                      </View>
+                </SafeAreaView>
               </View>
             </View>
     </View>
@@ -310,5 +337,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "transparent",
+  },
+  show_css : {
+    fontSize: 17,
+    fontWeight: "normal",
+    textDecorationLine: 'underline',
+    color : '#459ad8',
+    textAlign: 'center',
   },
 })

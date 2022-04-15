@@ -1,5 +1,5 @@
 import React ,{ useState, useEffect, Component } from "react";
-import { View, Text , StyleSheet , Image , TouchableOpacity , Button, Platform, Alert , FlatList , VirtualizedList} from "react-native";
+import {RefreshControl , View, Text , StyleSheet , Image , TouchableOpacity , Button, Platform, Alert , FlatList , VirtualizedList} from "react-native";
 import { RadioButton } from 'react-native-paper';
 import { DrawerItem } from "@react-navigation/drawer";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -16,9 +16,11 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [name, setName] = useState('');
   const [id, setId] = useState();
   const [diachi , setDiachi] = useState('');
-  const api = "http://192.168.43.153:3001/"
+  const api = "http://192.168.43.70:3001/"
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
+  
 
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
@@ -28,6 +30,18 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [nam , setNam] = useState(true);
   const [nu , setNu] = useState(false);
   const [khac , setKhac] = useState(false);
+  const [checkGt , setCheckGt] = useState('');
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    // wait(2000).then(() => setRefreshing(false));
+    setTimeout(() => {
+      setRefreshing(false)
+    }, 1000);
+  }, []);
 
     //Code Date Time
   const onChange = (event, selectedDate) => {
@@ -37,7 +51,8 @@ export default function ViewBoxesWithColorAndText({ navigation }){
     setDate(currentDate);
     
     let tempDate = new Date(currentDate);
-    let fDate = tempDate.getDate()+'/'+(tempDate.getMonth()+1)+'/'+tempDate.getFullYear();
+    // let fDate = tempDate.getDate()+'/'+(tempDate.getMonth()+1)+'/'+tempDate.getFullYear();
+    let fDate = tempDate.getFullYear()+'/'+(tempDate.getMonth()+1)+'/'+tempDate.getDate();
     setText(fDate);
   }
 
@@ -48,21 +63,45 @@ export default function ViewBoxesWithColorAndText({ navigation }){
 
 
 
-
-
 //Code hiển thị thông tin tài khoản
   const getData = async () => {
+    
      const value = await AsyncStorage.getItem('luutaikhoan');
      const response = await fetch(api + 'taikhoan/' + value);
      const json = await response.json();
     //  setData(json.movies);
     // console.log(json);
-    // console.log(json);
+    for (let i = 0; i < json.length; i++) {
+      console.log(json[i].gioitinh);
+      setCheckGt(json[i].gioitinh);
+    }
      setuserr(json);
  }
  useEffect(() => {
   getData();
+  CheckThongTin();
+  onRefresh();
 }, []);
+
+const CheckThongTin = () => {
+  console.log( "Giới tính đang ở số : " + checkGt);
+  if(checkGt === 1){
+    setNam(true);
+    setNu(false);
+    setKhac(false);
+    return(0);
+  }if(checkGt === 2){
+    setNam(false);
+    setNu(true);
+    setKhac(false);
+    return(0);
+  }if(checkGt === 0){
+    setNam(false);
+    setNu(false);
+    setKhac(true);
+    return(0);
+  }
+}
 
 //code check box
 const radiobtn_nam = () => {
@@ -81,21 +120,22 @@ const radiobtn_khac = () => {
   setKhac(true);
 }
 // code update checkbox
-const hobbies = []
-const clickbox = () => {
-  if(nam === true){
-    hobbies.push("Nam");
-  }if(nu === true){
-    hobbies.push("Nữ");
-  }if(khac === true){
-    hobbies.push("Khác");
-  }
-  Alert.alert("Tích vào : " + hobbies);
-}
+const checkboxhob = []
 
 //code cập nhật thông tin 
 const editproduct = () => {
   console.log('đây là id : ' + id);
+
+  if(nam === true){
+    checkboxhob.push("1");
+    return;
+  }if(nu === true){
+    checkboxhob.push("2");
+    return;
+  }if(khac === true){
+    checkboxhob.push("0");
+    return;
+  }
 
   fetch(api + 'editaccount/editid', {
     method: 'POST',
@@ -106,6 +146,8 @@ const editproduct = () => {
     body: JSON.stringify({
       editten: name,
       editdiachi: diachi,
+      date : text ,
+      gioitinh : checkboxhob,
       idUser: id
       // edithinhanh: hinhanhconst,
       // editchitiet: chitietconst
@@ -113,17 +155,23 @@ const editproduct = () => {
   })
     .then((response) => {
       if (response == 'okedit') {
-        alert("xóa thành công")
+        alert("Cập nhật thành công")
       }
     });
     Alert.alert("Update thành công")
+    refreshing
 }
 
   return (
    
     <View style={{backgroundColor : 'white'}} key = {name.tennguoidung}>
      <FlatList 
-    
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
       keyExtractor={({ name }, index) => name }
       key = {name.tennguoidung}
      style={{backgroundColor : 'white'}}
@@ -167,40 +215,21 @@ const editproduct = () => {
         
       </View>
 
-    <View style = {styles.input} key = {item.mataikhoan}>
-      <OutlineInput
-      key={item.tennguoidung}
-         value={name}
-         onChangeText={(e) => setName(e) === setId(item.mataikhoan)}
-        label="Họ và Tên"
-        autoCapitalize="words"
-        activeValueColor="#6c63fe"
-        activeBorderColor="#6c63fe"
-        activeLabelColor="#6c63fe"
-        passiveBorderColor="#bbb7ff"
-        passiveLabelColor="#bbb7ff"
-        passiveValueColor="#bbb7ff"
-        placeholder = "abcsa"
-      > </OutlineInput>
-      <Text>{item.tennguoidung}</Text>
-      <View style = {styles.inputdate}>
-      <OutlineInput
-      key={item.namsinh}
-        // maxLength = {0}
-        value={text}
-        // onChangeText={(e: string) => setEmail(e)}
-        label="Ngày-Tháng-Năm Sinh"
-        // error = "true"
-        // disabled
-        autoCapitalize="words"
-        activeValueColor="#6c63fe"
-        activeBorderColor="#6c63fe"
-        activeLabelColor="#6c63fe"
-        passiveBorderColor="#bbb7ff"
-        passiveLabelColor="#bbb7ff"
-        passiveValueColor="#bbb7ff"/>
-          <Icon style={styles.icon} name="calendar" size={25} onPress={() => showMode('date')}/> 
 
+    <View style = {styles.input} key = {item.mataikhoan}>
+      <TextInput
+        style={styles.text_input_css}
+        onChangeText={(e) => setName(e) === setId(item.mataikhoan)}
+        placeholder="Họ và Tên"
+      >{item.tennguoidung}</TextInput>
+
+      <View style = {styles.inputdate}>
+        <TextInput
+        style={styles.text_input_css}
+        onChangeText={(e) => setText(e) === setId(item.mataikhoan)}
+        placeholder="Năm / Tháng / Ngày"
+        >{text}</TextInput>
+          <Icon style={styles.icon} name="calendar" size={25} onPress={() => showMode('date') === setId(item.mataikhoan)}/> 
           {show && (
         <DateTimePicker testID="dataTimePicker" 
         value={date} 
@@ -210,23 +239,15 @@ const editproduct = () => {
         onChange={onChange}/>
           )}
       </View>
-      <Text>{item.namsinh}</Text>
+    <Text>{item.namsinh}</Text>
+
+
       </View>
       <Text style={styles.text_gioi_tinh}>Giới Tính</Text>
       <View style={styles.gioi_tinh} key={item.gioitinh}>
       
       <View style={styles.containera}>
-      {/* <RadioButton
-      color="red"
-        value="first"
-        status={ checked === 'first' ? 'checked' : 'unchecked' }
-        onPress={() => setChecked('first')}
-      />
-      <RadioButton
-        value="second"
-        status={ checked === 'second' ? 'checked' : 'unchecked' }
-        onPress={() => setChecked('second')}
-      /> */}
+      
       <CheckBox
             checked = {nam}
             title={"Nam"}
@@ -253,21 +274,11 @@ const editproduct = () => {
       </View>
       
       <View style = {styles.input}>
-      <OutlineInput 
-      key={item.diachi}
-         value={diachi}
-         onChangeText={(e) => setDiachi(e)}
-        label="Địa chỉ"
-        autoCapitalize="words"
-        activeValueColor="#6c63fe"
-        activeBorderColor="#6c63fe"
-        activeLabelColor="#6c63fe"
-        passiveBorderColor="#bbb7ff"
-        passiveLabelColor="#bbb7ff"
-        passiveValueColor="#bbb7ff"
-      ><TextInput></TextInput></OutlineInput>
-      <Text>{item.diachi}</Text>
-
+        <TextInput
+          style={styles.text_input_css}
+          onChangeText={(e) => setDiachi(e) === setId(item.mataikhoan)}
+          placeholder="Địa Chỉ"
+        >{item.diachi}</TextInput>
       </View>
       
       <View style={styles.css_update}>
@@ -302,6 +313,14 @@ const styles = StyleSheet.create({
     backgroundColor : "white",
     width : "100%" , 
     height : "100%",
+  },
+  text_input_css: {
+    color : '#6c63fe',
+    borderWidth: 1,
+    padding: 10,
+    borderRadius: 3,
+    borderColor : '#6c63fe',
+    
   },
   signIn: {
     height: 40,
