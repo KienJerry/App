@@ -39,8 +39,8 @@ export default function App({ navigation }) {
           />
           <View style={{ marginVertical: 35, marginStart: 10 }}>
             <Text style={{ marginVertical: 2, color: "#fff" }}>
-          
-              Trương Phú Đồng
+              {" "}
+              Trương Phú Đồng{" "}
             </Text>
             <Text style={{ marginVertical: 2, color: "#fff" }}>
               {" "}
