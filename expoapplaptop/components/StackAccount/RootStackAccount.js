@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import About from './About'
 import UpdateInformation from './UpdateInformation'
+import SignUp from '../../login/SignUp'
 
 function ProfileScreen({ navigation }) {
   return (
@@ -36,6 +37,8 @@ function MyStack() {
       <Stack.Screen name="UpdateInformation" component={UpdateInformation} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+
     </Stack.Navigator>
   );
 }

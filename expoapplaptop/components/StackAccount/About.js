@@ -18,6 +18,9 @@ export default function App({ navigation }) {
   const logout = async() => {
     await AsyncStorage.removeItem('luutaikhoan')
     Alert.alert("Vui lòng thoát app")
+    
+    // onPress={() => navigation.navigate("SignIn")}
+    
 }
   return (
     <View style={styles.container}>
@@ -48,7 +51,7 @@ export default function App({ navigation }) {
              
             </Text>
 
-            <Text onPress={logout}>Đăng Xuất</Text>
+            <Text onPress={() => navigation.navigate("SignUp")}>Đăng Xuất</Text>
           </View>
         </View>
       </View>

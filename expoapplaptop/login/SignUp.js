@@ -25,7 +25,6 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import * as Notification from "expo-notifications";
 import * as Permission from "expo-permissions";
 
-
 Notification.setNotificationHandler({
   handleNotification: async () => {
     return {
@@ -35,10 +34,9 @@ Notification.setNotificationHandler({
   },
 });
 
-
 const SignUpScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
-  const api = "http://192.168.43.153:3001/"
+  const api = "http://192.168.43.153:3001/";
   const [tendangkys, settendangky] = useState("");
   const [passdangkys, setpassdangky] = useState("");
 
@@ -54,7 +52,9 @@ const SignUpScreen = ({ navigation }) => {
   // đây là checkuser, đăng ký
   const checkusers = () => {
     if (tendangkys === "" || tendangkys === null) {
-      Alert.alert("Cảnh báo", "Tên không được bỏ trống!");
+      // Alert.alert("Cảnh báo", "Tên không được bỏ trống!");
+
+      // setVisible(true);
       return;
     }
 
@@ -63,8 +63,8 @@ const SignUpScreen = ({ navigation }) => {
       return;
     }
 
-    console.log(api + "dangky/")
-    fetch( api + "dangky/",{
+    console.log(api + "dangky/");
+    fetch(api + "dangky/", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -78,14 +78,16 @@ const SignUpScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then((res) => {
         if (res.success === true) {
-          Alert.alert("Thông báo", "Tạo thành công!");
+          setVisible(true);
+
+          // Alert.alert("Thông báo", "Tạo thành công!");
           navigation.navigate("SignIn");
         } else {
           Alert.alert("Thông báo", "Tài khoản tồn tại!");
         }
       });
-    Alert.alert("Thông báo", "Tạo thành công!");
-
+    // Alert.alert("Thông báo", "Tạo thành công!");
+    setVisible(true);
 
     Notification.scheduleNotificationAsync({
       content: {
@@ -96,7 +98,6 @@ const SignUpScreen = ({ navigation }) => {
         seconds: 1,
       },
     });
-
   };
 
   // đay là thông báo poup
@@ -139,7 +140,7 @@ const SignUpScreen = ({ navigation }) => {
     );
   };
 
-  // Notification 
+  // Notification
   useEffect(() => {
     Permission.getAsync(Permission.NOTIFICATIONS)
       .then((response) => {
@@ -302,7 +303,7 @@ const SignUpScreen = ({ navigation }) => {
                 Đăng nhập
               </Text>
             </TouchableOpacity>
-            <Text style={{marginVertical: 20, fontSize: 20}} >Hoặc</Text>
+            <Text style={{ marginVertical: 20, fontSize: 20 }}>Hoặc</Text>
 
             <View
               style={{
@@ -316,35 +317,35 @@ const SignUpScreen = ({ navigation }) => {
               <Icon style={{ margin: 10 }} size={30} name="google" />
               <Icon style={{ margin: 10 }} size={30} name="facebook" />
             </View>
-            
 
             <ModalPoup visible={visible}>
               <View style={{ alignItems: "center" }}>
-                <View style={styles.header}>
-                  <TouchableOpacity onPress={() => setVisible(false)}>
-                    <Image
-                      // source={require("../assets/icon3.png")}
-                      style={{ height: 30, width: 30 }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View style={{ alignItems: "center" }}>
                 <Image
                   source={require("../assets/checked.png")}
-                  style={{ height: 150, width: 150, marginVertical: 10 }}
+                  style={{ height: 120, width: 120, marginVertical: 10 }}
                 />
               </View>
 
               <Text
                 style={{
                   marginVertical: 30,
-                  fontSize: 20,
+                  fontSize: 25,
                   textAlign: "center",
                 }}
               >
-                Congratulations registration was successful
+                Bạn đăng ký thành công
               </Text>
+              <View style={{ alignItems: "center" }}>
+                <View style={styles.header}>
+                  <TouchableOpacity onPress={() => setVisible(false)}>
+                    {/* <Image
+                      source={require("../assets/icon.png")}
+                      style={{ height: 20, width: 20 }}
+                    /> */}
+                    <Text style={{ fontSize: 20, marginRight: 10 }}>OK</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
             </ModalPoup>
             {/* <Button title="Open Modal" onPress={() => setVisible(true)} /> */}
           </View>
@@ -434,7 +435,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: "80%",
+    width: "65%",
     backgroundColor: "white",
     paddingHorizontal: 20,
     paddingVertical: 30,
@@ -443,7 +444,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: "100%",
-    height: 40,
+    height: 35,
     alignItems: "flex-end",
     justifyContent: "center",
   },

@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Cart from './cart'
 import User from './User'
 import ProductDektais from './ProductDeltais'
+import SignUp from '../../login/SignUp'
 
 
 function SettingsScreen({ navigation }) {
@@ -26,6 +27,7 @@ function MyStack({navigation , route}) {
       <Stack.Screen name="ChiTietSanPham" component={ProductDektais} options={{tabBarVisible : false}}/>
       <Stack.Screen name="GioHang" component={Cart} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 }

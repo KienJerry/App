@@ -20,7 +20,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
  const api = "http://192.168.43.153:3001/"
-const SignInScreen = ({ navigation }) => {
+const SignInScreen = ({ navigation }) => {  
   const [check , setCheck] = useState(false);
   const [data, setData] = React.useState({
     username: "",
