@@ -61,6 +61,7 @@ const SignInScreen = ({ navigation }) => {
       .then((response) => response.json())
       .then(async (res) => {
         if (res.success === true) {
+          console.log('abc');
           if (check === true) {
             await AsyncStorage.setItem("luutaikhoan", tendangnhap);
           } else {
