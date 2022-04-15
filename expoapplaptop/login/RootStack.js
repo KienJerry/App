@@ -7,6 +7,7 @@ import Splash from "./Splash";
 import SignUp from "./SignUp";
 import SignIn from "./SignIn";
 import SignOut from "./SignOut";
+import Home from "../components/Home"
 
 const RootStackk = createStackNavigator();
 
@@ -31,6 +32,12 @@ const RootStack = ({ navigation }) => (
     <RootStackk.Screen
       name="SignOut"
       component={SignOut}
+      options={{ headerShown: false }}
+    />
+
+      <RootStackk.Screen
+      name="Home"
+      component={Home}
       options={{ headerShown: false }}
     />
   </RootStackk.Navigator>

@@ -16,7 +16,7 @@ export default function ViewBoxesWithColorAndText({ navigation }){
   const [name, setName] = useState('');
   const [id, setId] = useState();
   const [diachi , setDiachi] = useState('');
-  const api = "http://192.168.43.153:3001/"
+  const api = "http://192.168.43.70:3001/"
 
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
@@ -128,10 +128,13 @@ const editproduct = () => {
 
   if(nam === true){
     checkboxhob.push("1");
+    return;
   }if(nu === true){
     checkboxhob.push("2");
+    return;
   }if(khac === true){
     checkboxhob.push("0");
+    return;
   }
 
   fetch(api + 'editaccount/editid', {

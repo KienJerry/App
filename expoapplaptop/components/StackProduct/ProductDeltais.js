@@ -7,7 +7,7 @@ import { Rating } from 'react-native-ratings';
 import Swiper from "react-native-swiper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api = "http://192.168.43.153:3001/";
+const api = "http://192.168.43.70:3001/";
 const YourApp = ({ route, navigation , x }) => {
   //lấy thông tin từ bên sản phẩm qua , giống như url
   const { masanpham , giasanpham ,giacu , tensanpham , hangsanxuat , mahinhanh} = route.params;
@@ -61,12 +61,21 @@ const image_lider = [
 
  //thêm giỏ hàng  (Lưu dạng mảng) 
  const addItemToList = async() => {
+   const ListItem = {
+     image : mahinhanh,
+     name : tensanpham ,
+     manufacturer : hangsanxuat ,
+     giamoi : giasanpham ,
+     giacu : giacu
+   }
   try{
-    storageDataList.push( mahinhanh ,tensanpham , hangsanxuat , giasanpham , giacu); 
-    const output = JSON.stringify(storageDataList);
-    console.log(storageDataList)
-    await AsyncStorage.setItem('cartitem', output);
-    setInputCart('');
+    storageDataList.push(ListItem); 
+    const output = [
+      ['cartitem', JSON.stringify(storageDataList)]
+    ]
+    // console.log(storageDataList)
+    await AsyncStorage.multiSet(output);
+    // setInputCart('');
     // console.log(inputCart);
 
     Alert.alert('Thêm thành công');

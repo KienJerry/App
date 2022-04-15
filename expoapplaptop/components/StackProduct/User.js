@@ -36,7 +36,7 @@ import Iconn from "react-native-vector-icons/FontAwesome";
 // import Swiper from 'react-native-swiper'
 
 export default function Home({ navigation }) {
-  const api = "http://192.168.43.153:3001/"; //
+  const api = "http://192.168.43.70:3001/"; //
 
   const [data, setData] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
   const [dataa, setDataa] = useState([]);
@@ -89,7 +89,7 @@ export default function Home({ navigation }) {
 
     // tim kiem
 
-    fetch("http://192.168.43.153:3001/sanpham")
+    fetch("http://192.168.43.70:3001/sanpham")
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
