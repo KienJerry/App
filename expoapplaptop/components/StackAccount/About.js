@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  Modal,
 } from "react-native";
 import Swiper from "react-native-swiper";
 // import Icon from "../photo/icon";
@@ -19,9 +20,48 @@ export default function App({ navigation }) {
     await AsyncStorage.removeItem('luutaikhoan')
     Alert.alert("Vui lòng thoát app")
     
-    // onPress={() => navigation.navigate("SignIn")}
+     navigation.navigate("SignUp")}
+
+     const ModalPoup = ({ visible, children }) => {
+      const [showModal, setShowModal] = React.useState(visible);
+      const scaleValue = React.useRef(new Animated.Value(0)).current;
+      React.useEffect(() => {
+        toggleModal();
+      }, [visible]);
+      const toggleModal = () => {
+        if (visible) {
+          setShowModal(true);
+          Animated.spring(scaleValue, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        } else {
+          setTimeout(() => setShowModal(false), 200);
+          Animated.timing(scaleValue, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+          }).start();
+        }
+      };
+      return (
+        <Modal transparent visible={showModal}>
+          <View style={styles.modalBackGround}>
+            <Animated.View
+              style={[
+                styles.modalContainer,
+                { transform: [{ scale: scaleValue }] },
+              ]}
+            >
+              {children}
+            </Animated.View>
+          </View>
+        </Modal>
+      );
+    };
     
-}
+
   return (
     <View style={styles.container}>
       <View style={{ backgroundColor: "#0096C7", flexDirection: "row" }}>
@@ -51,7 +91,7 @@ export default function App({ navigation }) {
              
             </Text>
 
-            <Text onPress={() => navigation.navigate("SignUp")}>Đăng Xuất</Text>
+            <Text onPress={logout}>Đăng Xuất</Text>
           </View>
         </View>
       </View>
@@ -160,6 +200,8 @@ export default function App({ navigation }) {
       </View>
     </View>
   );
+
+          
 }
 
 const styles = StyleSheet.create({

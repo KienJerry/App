@@ -21,7 +21,6 @@ import Swiper from "react-native-swiper";
 import { image, icon } from "../../photo/index";
 const { width } = Dimensions.get("window");
 
-
 import { Input, SearchBar } from "react-native-elements";
 import React, { useState, useEffect, Component } from "react";
 import Dialog from "react-native-dialog";
@@ -31,38 +30,25 @@ import { ScrollView } from "react-native-gesture-handler";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Iconn from "react-native-vector-icons/FontAwesome";
 
-// import {icon, image} from '../photo/index'
-
-// import Swiper from 'react-native-swiper'
-
 export default function Home({ navigation }) {
-  const api = "http://192.168.43.70:3001/"; //
+  const api = "http://192.168.1.8:3001/"; //
 
   const [data, setData] = useState([]); //data đang là mảng rỗng =)) Vì trong database có nhiều mảng nên để rỗng thôi , Phần này với phần bên dưới là 1 cặp
   const [dataa, setDataa] = useState([]);
-  const [pagenumber, setpagenumber] = useState(""); // set number là 1 :> Vì lúc đầu vào giao diện , mình sẽ load trang 1 nên để mặc định là 1
   const onPressLearnMore = (getpage) => {
     // code cho button chuyen trang
     setpagenumber(getpage);
     //getData();
   };
 
-  // this.state = {
-  //   searchText: "",
-  //   data: [],
-  //   filteredData: []
-  // };
-
-  const [isLoading, setLoading] = useState(false); // Dòng này là dành cho phần dialog (lúc bấm vào thêm sản phẩm sẽ có)
-  //Thêm Sản Phẩm code
-  const [tenconst, settenconst] = useState(""); // Gọi tên sản phẩm khi show dialog
-  const [loaiconst, setloaiconst] = useState(""); // Gọi Loại sản phẩm khi show dialog
-  //code add product
+  const [isLoadding, setisLoadding] = useState(false);
+  const [page, setPage] = useState(1);
 
   // code gọi phân trang
   const getData = async () => {
+    console.log("getData");
     try {
-      const response = await fetch(api + "sanpham/" + pagenumber);
+      const response = await fetch(api + "sanpham/" + page);
       const json = await response.json();
       // console.log(json);
       setData(data.concat(json));
@@ -72,39 +58,41 @@ export default function Home({ navigation }) {
     }
   };
 
+  // list horizonttal
   const getDataa = async () => {
     try {
       const response = await fetch(api + "sanpham/");
       const json = await response.json();
-      // console.log(json);
-      // setData(json.movies);
       setDataa(json);
     } catch (error) {
       console.error(error);
     }
   };
+
   useEffect(() => {
     getData();
     getDataa();
 
+    // loadding phaan trang
+    setisLoadding(true);
+    console.log("useEffect");
+    console.log(" useEffect page:", page);
     // tim kiem
-
-    fetch("http://192.168.43.70:3001/sanpham")
+    fetch("http://192.168.1.8:3001/sanpham")
       .then((response) => response.json())
       .then((responseJson) => {
         setFilteredDataSource(responseJson);
         setMasterDataSource(responseJson);
+
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [pagenumber]);
 
-  const handleReload = () => {
-    console.log("daloadding");
-    setpagenumber(pagenumber + 1);
-    setLoading(true);
-  };
+
+     
+  }, [page]);
+
   ////////////////////////////////////////////////////////////////
 
   // tim kieem
@@ -130,13 +118,21 @@ export default function Home({ navigation }) {
     }
   };
 
-  renderFooter = () => {
-    return isLoading ? (
+  ////////
+  // render phaanf trang == icon loadding
+  const renderFooter = () => {
+    return isLoadding ? (
       <View style={styles.loader}>
         <ActivityIndicator size="large" />
       </View>
     ) : null;
   };
+  const handlerMoreLoadding = () => {
+    console.log("handlerMoreLoadding");
+    setPage(page + 1);
+    setisLoadding(true);
+  };
+  /////////
 
   return (
     <View style={{ flex: 1 }}>
@@ -273,8 +269,12 @@ export default function Home({ navigation }) {
             numColumns={2}
             showsVerticalScrollIndicator={false}
             style={styles.flatList}
+            // data={filteredDataSource}
             data={data}
-            onEndReached={handleReload}
+            ListFooterComponent={renderFooter}
+            onEndReached={handlerMoreLoadding}
+            onEndReachedThreshold={0}
+            // onEndReached={handleReload}
             // keyExtractor={item => item.id}
             // keyExtractor={({ item }, index) => item} //Mỗi item trong flatList sẽ yêu cầu 1 key :> key đó là key id (giống như khóa chính)
             renderItem={({ item }) => (
