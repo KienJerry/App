@@ -18,7 +18,7 @@ export default function App({ navigation }) {
   const logout = async() => {
     await AsyncStorage.removeItem('luutaikhoan')
     Alert.alert("Vui lòng thoát app")
-    navigation.navigate("SignUp")
+    // navigation.navigate("SignUp")
     
     // onPress={() => navigation.navigate("SignIn")}
     

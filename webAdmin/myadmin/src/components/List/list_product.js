@@ -2,6 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React, {useState,useEffect} from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import ReactPaginate from 'react-paginate';
  
 
 const api ='http://localhost:3001/';
@@ -38,11 +39,18 @@ function RecordsFetch() {
 
     // Gọi Danh sách sản phẩm
     const getUsers = async () => { 
-      const result = await axios.get("http://localhost:3001/sanpham");
+      const result = await axios.get("http://localhost:3001/sanpham/1");
     //   setUsers(result.data.reverse());
         setUsers(result.data);
         console.log(result.data);
      } 
+
+     const handePageClick = async(data) => {
+      let currenPage = data.selected + 1;
+        const base_url = "http://localhost:3001/sanpham/" + currenPage;
+        const response = await axios.get(base_url)
+        setUsers(response.data);
+    }
  
     useEffect(() => {
       getUsers();
@@ -119,7 +127,27 @@ function RecordsFetch() {
                             })
                          }  
                 </table>    
-            </div>    
+            </div>
+            <ReactPaginate
+           previousLabel={'<<'}
+           nextLabel={'>>'}
+           breakLabel={'...'}
+           pageCount={6}
+           marginPagesDisplayed={1}
+           pageRangeDisplayed={2}
+           onPageChange={handePageClick}
+           containerClassName={'pagination justify-content-center'}
+           pageClassName={'page-item'}
+           pageLinkClassName={'page-link'}
+           previousClassName={'page-item'}
+           previousAriaLabel={'page-link'}
+           nextClassName={'page-item'}
+           nextLinkClassName={'page-link'}
+           previousLinkClassName={'page-link'}
+           breakClassName={'page-item'}
+           breakLinkClassName={'page-link'}
+           activeClassName={'active'}
+        ></ReactPaginate>     
          </div>
     );
   }

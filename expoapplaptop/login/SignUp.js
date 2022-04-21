@@ -36,7 +36,7 @@ Notification.setNotificationHandler({
 
 const SignUpScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
-  const api = "http://192.168.43.153:3001/";
+  const api = "http://192.168.43.70:3001/";
   // const api = "http://192.168.43.70:3001/"
 
   const [tendangkys, settendangky] = useState("");

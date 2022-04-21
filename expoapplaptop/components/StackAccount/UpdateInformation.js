@@ -128,15 +128,16 @@ const editproduct = () => {
 
   if(nam === true){
     checkboxhob.push("1");
-    return;
+    // return;
   }if(nu === true){
     checkboxhob.push("2");
-    return;
+    // return;
   }if(khac === true){
     checkboxhob.push("0");
-    return;
+    // return;
   }
 
+  console.log("Đã vào đây")
   fetch(api + 'editaccount/editid', {
     method: 'POST',
     headers: {
