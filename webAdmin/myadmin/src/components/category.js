@@ -10,7 +10,7 @@ function Category (){
     const api ='http://localhost:3001/';
 // tạo const để tương tác giữa input với button
     const { register, handleSubmit,} = useForm();
-//Khởi tạo useState cho danh sách danh mục .
+//Khởi tạo useState cho danh sách danh mục 
     const[list_category, setlist_category] = useState([]);
 //code button thêm
     const onSubmit = data =>{ 
