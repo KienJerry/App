@@ -6,7 +6,7 @@ import { CheckBox } from "react-native-elements";
 import InputSpinner from "react-native-input-spinner";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api = "http://192.168.43.70:3001/";
+const api = "http://192.168.1.8:3001/";
 const GioHang = ({navigation}) => {
   const [check , setCheck] = useState(false);
   const [storageDataList , setStorageDataList] = useState([]);

@@ -7,7 +7,7 @@ import { Rating } from 'react-native-ratings';
 import Swiper from "react-native-swiper";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const api = "http://192.168.43.70:3001/";
+const api = "http://192.168.1.8:3001/";
 const YourApp = ({ route, navigation , x }) => {
   //lấy thông tin từ bên sản phẩm qua , giống như url
   const { masanpham , giasanpham ,giacu , tensanpham , hangsanxuat , mahinhanh} = route.params;

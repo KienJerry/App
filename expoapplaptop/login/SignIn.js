@@ -19,7 +19,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+<<<<<<< HEAD
 const api = "http://192.168.43.70:3001/";
+=======
+const api = "http://192.168.1.8:3001/";
+>>>>>>> 104b1c506e557bc95903322c2a1bd17efe0f7f56
 const SignInScreen = ({ navigation }) => {
   const [check, setCheck] = useState(false);
   const [data, setData] = React.useState({
