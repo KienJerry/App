@@ -16,6 +16,7 @@ import {
   Animated,
   Modal,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Animatable from "react-native-animatable";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { LinearGradient } from "expo-linear-gradient";
@@ -25,24 +26,18 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import * as Notification from "expo-notifications";
 import * as Permission from "expo-permissions";
 
-Notification.setNotificationHandler({
-  handleNotification: async () => {
-    return {
-      shouldPlaySound: true,
-      shouldShowAlert: true,
-    };
-  },
-});
 
 const SignUpScreen = ({ navigation }) => {
   const [visible, setVisible] = React.useState(false);
-<<<<<<< HEAD
   const api = "http://192.168.43.70:3001/";
-  // const api = "http://192.168.43.70:3001/"
-=======
-  const api = "http://192.168.1.8:3001/";
-  // const api = "http://192.168.1.8:3001/"
->>>>>>> 104b1c506e557bc95903322c2a1bd17efe0f7f56
+  Notification.setNotificationHandler({
+    handleNotification: async () => {
+      return {
+        shouldPlaySound: true,
+        shouldShowAlert: true,
+      };
+    },
+  });
 
   const [tendangkys, settendangky] = useState("");
   const [passdangkys, setpassdangky] = useState("");
